@@ -1,0 +1,66 @@
+import RootTabs from "@/components/tabs/root-bottom.tab";
+import { RootScreen } from "@/common/screen.constant";
+import { Tabs } from "expo-router";
+import React, { useContext } from "react";
+import { StatusBar, View } from "react-native";
+import ColorTheme from "@/common/color.constant";
+import { ScreenContext } from "@/src/contexts/screen.context";
+import { UseScreen } from "@/src/hooks/useScreen";
+
+const TabLayout = () => {
+  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  return (
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        headerStyle: {
+          shadowOpacity: 0, // Xóa bóng trên iOS
+          elevation: 0, // Xóa bóng trên Android
+          borderBottomWidth: 0, // Xóa viền dưới header,
+        },
+        tabBarStyle: {
+          borderTopWidth: 0, // Xóa viền trên tab bar
+          elevation: 0, // Xóa bóng trên Android
+          shadowOpacity: 0, // Xóa bóng trên iOS
+        },
+        headerTitleStyle: {
+          fontSize: 25,
+          fontWeight: "bold",
+          color: ColorTheme.Primary,
+        },
+      }}
+      tabBar={(props) => (
+        <View
+          style={{
+            padding: 10,
+            paddingHorizontal: isMobile ? 10 : 150,
+            backgroundColor: ColorTheme.WhiteE,
+          }}
+        >
+          <RootTabs {...props} />
+        </View>
+      )}
+    >
+      <Tabs.Screen
+        name={RootScreen.Home}
+        options={{
+          title: "Trang chủ",
+        }}
+      />
+      <Tabs.Screen
+        name={RootScreen.Booking}
+        options={{
+          title: "Đặt hẹn",
+        }}
+      />
+      <Tabs.Screen
+        name={RootScreen.Profile}
+        options={{
+          title: "Cá nhân",
+        }}
+      />
+    </Tabs>
+  );
+};
+
+export default TabLayout;

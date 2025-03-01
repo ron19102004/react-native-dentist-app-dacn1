@@ -1,20 +1,15 @@
 import ColorTheme from "@/common/color.constant";
+import { MarginStyle } from "@/common/style.comman";
 import React, { FC, useState } from "react";
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 
-interface ButtonCustomProps {
+interface ButtonCustomProps extends MarginStyle {
   title: string;
   color?: ColorTheme;
   textColor?: ColorTheme;
   fontSize?: number;
   bgFocus?: ColorTheme;
-  onPress?: () => void;
-  mt?: number;
-  mb?: number;
-  mr?: number;
-  ml?: number;
-  mx?: number;
-  my?: number;
+  onPress?: () => Promise<void>;
 }
 const ButtonCustom: FC<ButtonCustomProps> = ({
   title,

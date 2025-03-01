@@ -2,14 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { Dimensions, PixelRatio, ScaledSize } from "react-native";
 import { ScreenContext } from "../contexts/screen.context";
 
-export interface IUseScreen {
+export interface UseScreen {
   width: number;
   height: number;
   isMobile: boolean;
   isTablet: boolean;
   apply: (mobile: () => void, tablet: () => void) => void;
 }
-export const _useScreen = (): IUseScreen => {
+export const _useScreen = (): UseScreen => {
   const [screenSize, setScreenSize] = useState<ScaledSize>(
     Dimensions.get("window")
   );
@@ -34,5 +34,3 @@ export const _useScreen = (): IUseScreen => {
   };
 };
 
-const useScreen = (): IUseScreen => useContext<IUseScreen>(ScreenContext);
-export default useScreen;

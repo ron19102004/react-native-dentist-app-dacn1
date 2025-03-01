@@ -1,0 +1,81 @@
+import ColorTheme from "@/common/color.constant";
+import React, { FC, useContext, useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import Images from "@/assets/images";
+import { BoxShadow } from "@/common/style.comman";
+import { ScreenContext } from "@/src/contexts/screen.context";
+import { UseScreen } from "@/src/hooks/useScreen";
+
+interface User {
+  name: string;
+  uid: number;
+}
+interface ProfileTileProps {
+  user: User;
+  onPress?: (user: User) => void;
+}
+const ProfileTile: FC<ProfileTileProps> = ({ user, onPress = () => {} }) => {
+  const [mtTile] = useState<number>(25);
+  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  return (
+    <Pressable onPress={() => onPress(user)}>
+      <View
+        style={{
+          backgroundColor: ColorTheme.Primary,
+          height: 100,
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          position: "relative",
+          marginBottom: mtTile,
+          borderBottomEndRadius: isMobile ? 10 : 20,
+          borderBottomStartRadius: isMobile ? 10 : 20,
+          ...BoxShadow({ color: ColorTheme.Primary, elevation: 20 }),
+        }}
+      >
+        <View
+          style={{
+            width: "95%",
+            position: "absolute",
+            flexDirection: "row",
+            alignItems: "center",
+            paddingVertical: 20,
+            paddingHorizontal: 12,
+            backgroundColor: ColorTheme.White,
+            bottom: -mtTile,
+            borderRadius: 10,
+          }}
+        >
+          <Image
+            source={Images.MaxR}
+            style={{
+              width: 60,
+              height: 60,
+              objectFit: "cover",
+              borderRadius: 100,
+            }}
+          />
+          <View style={{ paddingLeft: 10 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: ColorTheme.Primary,
+              }}
+            >
+              {user.name}
+            </Text>
+            <Text style={{ fontStyle: "italic", color: ColorTheme.Black }}>
+              UID: {user.uid}
+            </Text>
+            <Text style={{ fontStyle: "italic", color: ColorTheme.Black }}>
+              Mã giới thiệu: {user.uid}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </Pressable>
+  );
+};
+
+export default ProfileTile;

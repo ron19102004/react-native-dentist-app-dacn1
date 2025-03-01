@@ -1,11 +1,13 @@
 import ColorTheme from "@/common/color.constant";
 import React, { FC, HTMLAttributes, useState } from "react";
 import {
+  NativeSyntheticEvent,
   Pressable,
   StyleProp,
   StyleSheet,
   Text,
   TextInput,
+  TextInputChangeEventData,
   TextInputProps,
   TextStyle,
   View,
@@ -18,7 +20,10 @@ import { IconProps } from "@expo/vector-icons/build/createIconSet";
 interface TextInputCustomProps {
   label?: string;
   props?: TextInputProps;
-  onChangeText: (value: string) => void;
+  onChangeText?: ((text: string) => void) | undefined;
+  onChange?:
+    | ((e: NativeSyntheticEvent<TextInputChangeEventData>) => void)
+    | undefined;
   error?: boolean;
   errorMsg?: string;
   icon:
@@ -331,11 +336,12 @@ const TextInputCustom: FC<TextInputCustomProps> = ({
   errorMsg,
   icon,
   isPassword = false,
+  onChange,
 }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [openPwd, setOpenPwd] = useState<boolean>(false);
   return (
-    <View style={{...styles.ViewWrap,}}>
+    <View style={{ ...styles.ViewWrap }}>
       {label && (
         <Text
           style={{
@@ -348,6 +354,7 @@ const TextInputCustom: FC<TextInputCustomProps> = ({
       )}
       <View style={{ position: "relative" }}>
         <AntDesign
+          //@ts-ignore
           name={icon}
           style={{
             fontSize: 20,
@@ -379,6 +386,7 @@ const TextInputCustom: FC<TextInputCustomProps> = ({
           }}
         />
         <TextInput
+          onChange={onChange}
           {...props}
           secureTextEntry={
             isPassword && isPassword === true && openPwd === false

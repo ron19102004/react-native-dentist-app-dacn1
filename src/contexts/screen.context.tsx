@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode } from "react";
-import { _useScreen, IUseScreen } from "../hooks/useScreen";
+import { _useScreen, UseScreen } from "../hooks/useScreen";
 
-export const ScreenContext = createContext<IUseScreen>({
+export const ScreenContext = createContext<UseScreen>({
   width: 0,
   height: 0,
   isMobile: true,
