@@ -2,14 +2,6 @@ import ColorTheme from "@/common/color.constant";
 import { AuthScreen } from "@/common/screen.constant";
 import { Stack } from "expo-router";
 import React, { Fragment } from "react";
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StatusBar,
-} from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const AuthLayout = () => {
   return (

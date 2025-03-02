@@ -14,16 +14,13 @@ import {
 import Images from "@/assets/images";
 import { Link, useFocusEffect, useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
-import { ScreenContext } from "@/src/contexts/screen.context";
-import { UseScreen } from "@/src/hooks/useScreen";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { LoginRequestParam } from "@/src/apis/auth.api";
+import StatusBarCustom from "@/components/status-bar";
+import { useAuth, useScreen } from "@/src/contexts";
 
-interface LoginRequestParam {
-  username: string;
-  password: string;
-}
+
 const schema = yup.object().shape({
   username: yup.string().required("Tên tài khoản là bắt buộc"),
   password: yup
@@ -33,24 +30,20 @@ const schema = yup.object().shape({
 });
 const LoginScreen = () => {
   const router = useRouter();
-  const { width, height, isTablet } = useContext<UseScreen>(ScreenContext);
+  const { width, height, isTablet } = useScreen();
+  const {login} = useAuth()
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<LoginRequestParam>({ resolver: yupResolver(schema) });
   const submit = async (data: LoginRequestParam) => {
-    console.log(data);
+    await login(data)
     router.replace("/root");
   };
-  useFocusEffect(
-    useCallback(() => {
-      StatusBar.setBackgroundColor(ColorTheme.White);
-      StatusBar.setBarStyle("dark-content"); // Hoặc "light-content" nếu cần
-    }, [])
-  );
   return (
     <View style={styles.Main}>
+      <StatusBarCustom bg={ColorTheme.White} style="dark-content"/>
       <View style={styles.Form}>
         <Image
           source={Images.LovePikDentist}

@@ -13,27 +13,22 @@ import PagerView from "react-native-pager-view";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { UseScreen } from "@/src/hooks/useScreen";
-import { ScreenContext } from "@/src/contexts/screen.context";
 import { BoxShadow } from "@/common/style.comman";
 import HomeTabNav from "@/components/home/nav-tab.home";
 import { useFocusEffect } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import CategoryHome from "@/components/home/category.home";
 import ServiceHot from "@/components/home/service-hot.home";
+import StatusBarCustom from "@/components/status-bar";
+import {  useScreen } from "@/src/contexts";
 
 const HomeScreen = () => {
   const progress = useSharedValue<number>(0);
-  const { width, isMobile } = useContext<UseScreen>(ScreenContext);
-
-  useFocusEffect(
-    useCallback(() => {
-      StatusBar.setBackgroundColor(ColorTheme.White);
-      StatusBar.setBarStyle("dark-content"); // Hoặc "light-content" nếu cần
-    }, [])
-  );
+  const { width, isMobile } = useScreen();
 
   return (
     <View style={{ flex: 1, backgroundColor: ColorTheme.WhiteE }}>
+      <StatusBarCustom bg={ColorTheme.White} style="dark-content" />
       <HomeTabNav />
       <ScrollView style={{ flex: 1 }}>
         <Carousel
@@ -101,7 +96,7 @@ const HomeScreen = () => {
           </Text>
           <ServiceHot />
         </View>
-        <View style={{ marginBottom: 20 }} />
+        <View style={{ marginBottom: 5 }} />
       </ScrollView>
     </View>
   );

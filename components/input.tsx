@@ -386,6 +386,7 @@ const TextInputCustom: FC<TextInputCustomProps> = ({
           }}
         />
         <TextInput
+          numberOfLines={1}
           onChange={onChange}
           {...props}
           secureTextEntry={

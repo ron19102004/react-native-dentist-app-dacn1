@@ -4,11 +4,10 @@ import { Tabs } from "expo-router";
 import React, { useContext } from "react";
 import { StatusBar, View } from "react-native";
 import ColorTheme from "@/common/color.constant";
-import { ScreenContext } from "@/src/contexts/screen.context";
-import { UseScreen } from "@/src/hooks/useScreen";
+import { useScreen } from "@/src/contexts";
 
 const TabLayout = () => {
-  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  const { isMobile } = useScreen();
   return (
     <Tabs
       screenOptions={{

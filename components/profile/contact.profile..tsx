@@ -1,8 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 import { Linking, StyleSheet, Text, View } from "react-native";
 import ListTile from "../list-tile";
 import { AntDesign } from "@expo/vector-icons";
 import ColorTheme from "@/common/color.constant";
+import { useRouter } from "expo-router";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 interface InforData {
   phone: string;
@@ -11,10 +13,14 @@ interface InforData {
 }
 const Infor: InforData = {
   phone: "0392477615",
-  facebook: "https://www.facebook.com/ronial.04",
+  facebook: "https://facebook.com/ronial.04",
   gmail: "ron19102004@gmail.com",
 };
-const ContactSupport = () => {
+interface ContactSupportProps {
+  bottomSheetModalRef: React.RefObject<BottomSheetModal>;
+}
+const ContactSupport: FC<ContactSupportProps> = ({ bottomSheetModalRef }) => {
+  const router = useRouter();
   const openSafeURL = async (url: string) => {
     const supported = await Linking.canOpenURL(url);
     if (supported) {
@@ -22,6 +28,10 @@ const ContactSupport = () => {
     } else {
       alert("Không thể mở URL này");
     }
+    closeSheetBottom()
+  };
+  const closeSheetBottom = () => {
+    bottomSheetModalRef.current?.close();
   };
   return (
     <View>
@@ -56,7 +66,11 @@ const ContactSupport = () => {
         )}
       />
       <ListTile
-        onPress={async () => await openSafeURL(Infor.facebook)}
+        onPress={async () => {
+          //@ts-ignore
+          router.navigate(`/browser/${encodeURIComponent(Infor.facebook)}`);
+          closeSheetBottom()
+        }}
         center={(color) => <Text style={{ color: color }}>Facebook</Text>}
         leading={(color) => (
           <AntDesign

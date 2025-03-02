@@ -3,22 +3,25 @@ import React, { FC, useContext, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Images from "@/assets/images";
 import { BoxShadow } from "@/common/style.comman";
-import { ScreenContext } from "@/src/contexts/screen.context";
 import { UseScreen } from "@/src/hooks/useScreen";
+import { User } from "@/src/apis/model";
+import { useAuth, useScreen } from "@/src/contexts";
 
-interface User {
-  name: string;
-  uid: number;
-}
 interface ProfileTileProps {
-  user: User;
   onPress?: (user: User) => void;
 }
-const ProfileTile: FC<ProfileTileProps> = ({ user, onPress = () => {} }) => {
+const ProfileTile: FC<ProfileTileProps> = ({ onPress = () => {} }) => {
+  const { userCurrent } = useAuth();
   const [mtTile] = useState<number>(25);
-  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  const { isMobile } = useScreen();
   return (
-    <Pressable onPress={() => onPress(user)}>
+    <Pressable
+      onPress={() => {
+        if (userCurrent !== null) {
+          onPress(userCurrent);
+        }
+      }}
+    >
       <View
         style={{
           backgroundColor: ColorTheme.Primary,
@@ -63,13 +66,13 @@ const ProfileTile: FC<ProfileTileProps> = ({ user, onPress = () => {} }) => {
                 color: ColorTheme.Primary,
               }}
             >
-              {user.name}
+              {userCurrent?.name}
             </Text>
             <Text style={{ fontStyle: "italic", color: ColorTheme.Black }}>
-              UID: {user.uid}
+              UID: {userCurrent?.uid}
             </Text>
             <Text style={{ fontStyle: "italic", color: ColorTheme.Black }}>
-              Mã giới thiệu: {user.uid}
+              Mã giới thiệu: {userCurrent?.uid}
             </Text>
           </View>
         </View>

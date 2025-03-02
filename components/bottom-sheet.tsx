@@ -14,7 +14,9 @@ interface BottomSheetCustomProps {
   button: (
     bottomSheetModalRef: React.RefObject<BottomSheetModal>
   ) => React.ReactNode;
-  child: () => React.ReactNode;
+  child: (
+    bottomSheetModalRef: React.RefObject<BottomSheetModal>
+  ) => React.ReactNode;
 }
 const BottomSheetCustom: FC<BottomSheetCustomProps> = ({
   bottomSheetViewStyle = {},
@@ -38,7 +40,7 @@ const BottomSheetCustom: FC<BottomSheetCustomProps> = ({
         style={{ ...bottomSheetModalStyle, ...BoxShadow({}) }}
       >
         <BottomSheetView style={bottomSheetViewStyle}>
-          {child()}
+          {child(modalRef)}
         </BottomSheetView>
       </BottomSheetModal>
     </Fragment>

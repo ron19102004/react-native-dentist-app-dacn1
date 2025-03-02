@@ -1,5 +1,5 @@
-import { createContext, FC, ReactNode } from "react";
-import { _useScreen, UseScreen } from "../hooks/useScreen";
+import { createContext, FC, ReactNode, useContext } from "react";
+import _useScreen, { UseScreen } from "../hooks/useScreen";
 
 export const ScreenContext = createContext<UseScreen>({
   width: 0,
@@ -20,3 +20,5 @@ const ScreenProvider: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 export default ScreenProvider;
+
+ 

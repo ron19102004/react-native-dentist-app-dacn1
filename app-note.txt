@@ -1,0 +1,4 @@
+app.json -> android ->  "adaptiveIcon": {
+        "foregroundImage": "./assets/images/toothLogo.png",
+        "backgroundColor": "#ffffff"},
+        

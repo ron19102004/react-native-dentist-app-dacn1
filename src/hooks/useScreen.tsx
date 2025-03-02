@@ -9,7 +9,7 @@ export interface UseScreen {
   isTablet: boolean;
   apply: (mobile: () => void, tablet: () => void) => void;
 }
-export const _useScreen = (): UseScreen => {
+const _useScreen = (): UseScreen => {
   const [screenSize, setScreenSize] = useState<ScaledSize>(
     Dimensions.get("window")
   );
@@ -34,3 +34,4 @@ export const _useScreen = (): UseScreen => {
   };
 };
 
+export default _useScreen

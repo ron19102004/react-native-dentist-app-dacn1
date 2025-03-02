@@ -1,7 +1,7 @@
 import Images from "@/assets/images";
 import ColorTheme from "@/common/color.constant";
 import { BoxShadow } from "@/common/style.comman";
-import { ScreenContext } from "@/src/contexts/screen.context";
+import { useScreen } from "@/src/contexts";
 import { UseScreen } from "@/src/hooks/useScreen";
 import { Feather } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
@@ -22,7 +22,7 @@ const categories: Category[] = [
 ];
 
 const CategoryHome = () => {
-  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  const { isMobile } = useScreen();;
   return (
     <View>
       <FlashList

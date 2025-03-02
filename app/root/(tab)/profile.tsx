@@ -5,9 +5,8 @@ import ChangePassword from "@/components/profile/change-password.profile";
 import ContactSupport from "@/components/profile/contact.profile.";
 import EnterReferralCode from "@/components/profile/enter-referral-code.profile";
 import ProfileTile from "@/components/profile/profile-tile.profile";
-import { ScreenContext } from "@/src/contexts/screen.context";
 import { UseScreen } from "@/src/hooks/useScreen";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { Fragment, useCallback, useContext } from "react";
 import * as Clipboard from "expo-clipboard";
@@ -22,23 +21,16 @@ import {
   ToastAndroid,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
+import StatusBarCustom from "@/components/status-bar";
+import { useAuth, useScreen } from "@/src/contexts";
 
 const ProfileScreen = () => {
-  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  const { isMobile } = useScreen();
   const router = useRouter();
-
-  const logout = async () => {
-    router.replace("/");
-    ToastAndroid.show("Đã đăng xuất", ToastAndroid.LONG);
-  };
-  useFocusEffect(
-    useCallback(() => {
-      StatusBar.setBackgroundColor(ColorTheme.Primary);
-      StatusBar.setBarStyle("light-content"); // Hoặc "light-content" nếu cần
-    }, [])
-  );
+  const { logout } = useAuth();
   return (
     <Fragment>
+      <StatusBarCustom bg={ColorTheme.Primary} style="light-content" />
       <View
         style={{
           backgroundColor: ColorTheme.WhiteE,
@@ -66,7 +58,6 @@ const ProfileScreen = () => {
         </View>
         {/* Thông tin tài khoản */}
         <ProfileTile
-          user={{ name: "Trần Ngọc Anh Dũng", uid: 12345 }}
           onPress={(user) => {
             router.navigate("/root/profile/details-profile");
           }}
@@ -230,7 +221,33 @@ const ProfileScreen = () => {
                 )}
               />
             )}
-            child={() => <ContactSupport />}
+            child={(ref) => <ContactSupport bottomSheetModalRef={ref} />}
+          />
+          {/* Trình duyệt */}
+          <ListTile
+            mx={isMobile ? 15 : 30}
+            center={(color) => (
+              <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                Trình duyệt
+              </Text>
+            )}
+            leading={(color) => (
+              <Feather
+                name="globe"
+                style={{ ...styles.TileIcon, color: color }}
+              />
+            )}
+            suffix={(color) => (
+              <AntDesign
+                name="right"
+                style={{ ...styles.TileIcon, color: color }}
+              />
+            )}
+            onPress={async () => {
+              router.push(
+                `/browser/${encodeURIComponent("https://www.google.com/")}`
+              );
+            }}
           />
           {/* Đăng xuất */}
           <ListTile

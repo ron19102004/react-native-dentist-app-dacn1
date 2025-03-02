@@ -4,12 +4,6 @@ import React, { useCallback } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 const BookingScreen = () => {
-    useFocusEffect(
-        useCallback(() => {
-          StatusBar.setBackgroundColor(ColorTheme.White);
-          StatusBar.setBarStyle("dark-content"); // Hoặc "light-content" nếu cần
-        }, [])
-      );
     return (
         <View>
             

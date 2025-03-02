@@ -1,13 +1,15 @@
 import ColorTheme from "@/common/color.constant";
 import { BoxShadow } from "@/common/style.comman";
-import { ScreenContext } from "@/src/contexts/screen.context";
+import { useAuth, useScreen } from "@/src/contexts";
 import { UseScreen } from "@/src/hooks/useScreen";
 import { AntDesign } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const HomeTabNav = () => {
-  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  const { userCurrent } = useAuth();
+
+  const { isMobile } = useScreen();
   return (
     <View
       style={{
@@ -27,7 +29,7 @@ const HomeTabNav = () => {
             color: ColorTheme.Primary,
           }}
         >
-          Xin chào Trần Ngọc Anh Dũng
+          Xin chào {userCurrent?.name}
         </Text>
         <Text style={{ color: ColorTheme.Black, fontStyle: "italic" }}>
           Điểm tích lũy: 10 điểm

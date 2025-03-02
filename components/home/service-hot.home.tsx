@@ -1,16 +1,11 @@
 import ColorTheme from "@/common/color.constant";
 import { BoxShadow } from "@/common/style.comman";
-import { ScreenContext } from "@/src/contexts/screen.context";
+import { Service } from "@/src/apis/model";
+import { useScreen } from "@/src/contexts";
 import { UseScreen } from "@/src/hooks/useScreen";
 import { FlashList } from "@shopify/flash-list";
 import React, { FC, useContext, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-
-interface Service {
-  name: string;
-  url: string;
-  img: string;
-}
 
 const services: Service[] = [
   {
@@ -40,7 +35,7 @@ const services: Service[] = [
   },
 ];
 const ServiceHot = () => {
-  const { isMobile } = useContext<UseScreen>(ScreenContext);
+  const { isMobile } = useScreen();;
   return (
     <View>
       <FlashList
