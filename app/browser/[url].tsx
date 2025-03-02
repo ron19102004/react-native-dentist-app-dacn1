@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: ColorTheme.White,
     flex: 1,
     borderRadius: 10,
-    paddingHorizontal: 10,
+    padding: 10,
     marginHorizontal: 5,
     borderWidth: 0.5,
     borderColor: ColorTheme.BlackC,

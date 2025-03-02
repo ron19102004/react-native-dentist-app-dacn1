@@ -8,12 +8,6 @@ import ColorTheme from "@/common/color.constant";
 import StatusBarCustom from "@/components/status-bar";
 const StartScreen = () => {
   const { width, height, isTablet } = useContext<UseScreen>(ScreenContext);
-  const router = useRouter();
-  useEffect(() => {
-    setTimeout(() => {
-      router.replace("/auth/login");
-    }, 3000);
-  }, [0]);
   return (
     <View
       style={{
