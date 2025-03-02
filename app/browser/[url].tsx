@@ -101,7 +101,7 @@ const BrowserScreen = () => {
       {/* Thanh nhập URL */}
       <View
         style={{
-          paddingHorizontal: 10,
+          paddingHorizontal: isMobile ? 10 : 100,
           paddingVertical: 5,
           backgroundColor: ColorTheme.White,
         }}

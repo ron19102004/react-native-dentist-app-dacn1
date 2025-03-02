@@ -18,8 +18,8 @@ const AppLayout = () => {
                 headerShown: false,
                 animation: "ios_from_right",
               }}
-              initialRouteName="root"
             >
+              <Stack.Screen name="index" />
               <Stack.Screen name="root" />
               <Stack.Screen name="auth" />
               <Stack.Screen name="browser/[url]" />
