@@ -13,13 +13,11 @@
     },
     "android": {
       "package": "com.ron19102004.dentistapp",
-      "supportsTablet":true,
+      "supportsTablet": true,
       "intentFilters": [
         {
           "action": "VIEW",
-          "data": [
-            { "scheme": "fb", "host": "profile" }
-          ],
+          "data": [{ "scheme": "fb", "host": "profile" }],
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
