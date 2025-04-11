@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../contexts/auth.context";
 import * as Notifications from "expo-notifications";
+import { API_HOST_NAME } from "../constants/api.constant";
 
 export interface NotificationContextType {
   socket: WebSocket | null;
@@ -25,7 +26,7 @@ const useNotification = (): NotificationContextType => {
     const connectSocket = async () => {
       if (!isLoading && isAuthenticated && token && token.length > 0) {
         socket.current = new WebSocket(
-          `ws://192.168.1.2:8080/notification?token=${token}&userAgent=web`
+          `ws://${API_HOST_NAME}/notification?token=${token}&userAgent=mobile`
         );
         socket.current.onopen = () => {
           console.log("🔵 Notification Connected");

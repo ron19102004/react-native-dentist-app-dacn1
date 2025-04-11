@@ -16,10 +16,9 @@ import { Link, useFocusEffect, useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoginRequestParam } from "@/src/apis/auth.api";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
-
+import { UserLoginRequest } from "@/src/apis/auth.api";
 
 const schema = yup.object().shape({
   username: yup.string().required("Tên tài khoản là bắt buộc"),
@@ -31,19 +30,23 @@ const schema = yup.object().shape({
 const LoginScreen = () => {
   const router = useRouter();
   const { width, height, isTablet } = useScreen();
-  const {login} = useAuth()
+  const { login, isAuthenticated, isLoading } = useAuth();
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<LoginRequestParam>({ resolver: yupResolver(schema) });
-  const submit = async (data: LoginRequestParam) => {
-    await login(data)
-    router.replace("/root");
+  } = useForm<UserLoginRequest>({ resolver: yupResolver(schema) });
+  const submit = async (data: UserLoginRequest) => {
+    await login(data);
   };
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      router.replace("/root");
+    }
+  }, [isAuthenticated,isLoading]);
   return (
     <View style={styles.Main}>
-      <StatusBarCustom bg={ColorTheme.White} style="dark-content"/>
+      <StatusBarCustom bg={ColorTheme.White} style="dark-content" />
       <View style={styles.Form}>
         <Image
           source={Images.LovePikDentist}
@@ -87,6 +90,7 @@ const LoginScreen = () => {
             }}
           />
           <ButtonCustom
+            disabled={isLoading}
             title="Đăng nhập"
             onPress={handleSubmit(submit)}
             mt={15}

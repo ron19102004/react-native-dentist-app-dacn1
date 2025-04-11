@@ -4,6 +4,9 @@ import authApi, {
   UserLoginRequest,
   UserRegisterRequest,
 } from "../apis/auth.api";
+import useStorage from "./useStorage";
+
+const ACCESS_TOKEN_KEY: string = "token";
 export interface UseAuth {
   token: string | null;
   isAuthenticated: boolean;
@@ -15,6 +18,10 @@ export interface UseAuth {
   login(metadata: UserLoginRequest): Promise<void>;
   logout(): Promise<void>;
   register(metadata: UserRegisterRequest): Promise<void>;
+  ifAuthFn<T>(
+    fn: (token: string) => Promise<T>,
+    errors?: (error: string) => void
+  ): Promise<T | null>;
 }
 
 const _useAuth = (): UseAuth => {
@@ -24,11 +31,29 @@ const _useAuth = (): UseAuth => {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [userCurrent, setUserCurrent] = useState<User | null>(null);
+  const { get:getStorage, remove:removeStorage, save: saveStorage } = useStorage();
 
+  const ifAuthFn = async <T,>(
+    fn: (token: string) => Promise<T>,
+    errors?: (error: string) => void
+  ) => {
+    try {
+      if (isAuthenticated && token) {
+        return await fn(token);
+      } else {
+        if (errors) errors("Require authentication");
+      }
+    } catch (error) {
+      if (errors) errors("Request error");
+    }
+    return null;
+  };
   const login = async (metadata: UserLoginRequest): Promise<void> => {
     try {
       setIsLoading(true);
       const response = await authApi.userLogin(metadata);
+      console.log(response);
+      (response)
       if (response.code !== 200) {
         setIsError(true);
         setErrorMessage(response.message);
@@ -39,7 +64,7 @@ const _useAuth = (): UseAuth => {
       setToken(accessToken);
       setIsAuthenticated(true);
       setUserCurrent(user);
-      // Cookies.set("token", accessToken);
+      await saveStorage(ACCESS_TOKEN_KEY, accessToken);
     } catch (error) {
       setIsError(true);
       setErrorMessage("Failed to login");
@@ -51,12 +76,13 @@ const _useAuth = (): UseAuth => {
     setToken(null);
     setIsAuthenticated(false);
     setUserCurrent(null);
-    // Cookies.remove("token");
+    await removeStorage(ACCESS_TOKEN_KEY)
   };
   const register = async (metadata: UserRegisterRequest): Promise<void> => {
     try {
       setIsLoading(true);
       const response = await authApi.userRegister(metadata);
+      console.log(response);
       if (response.code !== 200) {
         setIsError(true);
         setErrorMessage(response.message);
@@ -71,34 +97,20 @@ const _useAuth = (): UseAuth => {
     }
   };
   const initializeAuth = async () => {
+    console.log("Auth initialized");
     try {
       setIsLoading(true);
-      const token = undefined;
+      const token = await getStorage(ACCESS_TOKEN_KEY);
       if (token) {
-        setToken(token);
-        setIsAuthenticated(true);
+        const getUserInfo = await authApi.getInfoUser(token);
+        if(getUserInfo &&getUserInfo.code === 200){
+          setIsAuthenticated(true);
+          setToken(token)
+          setUserCurrent(getUserInfo.data)
+        }
       } else {
-        const tokenF =
-          "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkdW5nMjkiLCJleHAiOjE3NDU1NzgyMTAsImlhdCI6MTc0NDI4MjIxMCwianRpIjoiNDU3ODA2ODgtMThlYy00MTM4LWE3NzUtZDI1NGUwZDU3NWJhIn0.Qhy_vyoZA52s8-617N4d8qJSSocUonrojJKCeunY7wBH6RujTKVdlLJgR6Dvn1-Lh_OWWSSXxzGeoT0qnzrf-8Hu27BxiKA7vdm4aC3h1088eWHopTFhgWxqRBpd3Ezgb-mh3bcCd9O9heiTRTIlQLeddy2lLOAVJXg5N_A4RDjPuDzQL6PC9rPWvXvVzj-PJ0QgiC-AzF2u12FeyPHyQlpwA-EicwoVlZRrD_0T1TO9AEQB5BBF61M_T-BT9ETZRUHXRf_EVnrWk99n3I0FzZlYQGZb1bgWNR0UJvLbWvrokCAWCH2msiYxXKSKeePJyNc4JD7rb015gqUJ08jANg";
-        setToken(tokenF);
-        setIsAuthenticated(true);
-        // Cookies.set("token", tokenF);
+        setIsAuthenticated(false);
       }
-      const user: User = {
-        id: 0,
-        fullName: "TEST",
-        email: "TEST",
-        phone: "TEST",
-        username: "TEST",
-        gender: Gender.MALE,
-        active: false,
-        role: Role.ADMIN,
-        otpcode: "TEST",
-        otpexpiredAt: "TEST",
-        createdAt: "TEST",
-        updatedAt: "TEST",
-      };
-      setUserCurrent(user);
     } catch (error) {
       setIsError(true);
       setErrorMessage("Failed to initialize authentication");
@@ -107,10 +119,7 @@ const _useAuth = (): UseAuth => {
     }
   };
   useEffect(() => {
-    setTimeout(() => {
-      initializeAuth();
-      console.log("Auth initialized");
-    }, 2000);
+    initializeAuth();
   }, []);
   return {
     token: token,
@@ -122,6 +131,7 @@ const _useAuth = (): UseAuth => {
     login: login,
     logout: logout,
     register: register,
+    ifAuthFn: ifAuthFn,
   };
 };
 export default _useAuth;

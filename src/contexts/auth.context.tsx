@@ -19,6 +19,9 @@ export const AuthContext = createContext<UseAuth>({
   register: function (metadata: UserRegisterRequest): Promise<void> {
     throw new Error("Function not implemented.");
   },
+  ifAuthFn: function <T>(fn: (token: string) => Promise<T>, errors?: (error: string) => void): Promise<T | null> {
+    throw new Error("Function not implemented.");
+  }
 });
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -28,7 +31,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const checkAuthentication = async (): Promise<void> => {
     if (!value.isLoading) {
       if (!value.isAuthenticated) {
-        router.replace("/auth/login");
+        router.replace("/login");
       } else {
         router.replace("/root");
       }
