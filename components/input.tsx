@@ -1,6 +1,7 @@
 import ColorTheme from "@/common/color.constant";
 import React, { FC, HTMLAttributes, useState } from "react";
 import {
+  KeyboardTypeOptions,
   NativeSyntheticEvent,
   Pressable,
   StyleProp,
@@ -327,6 +328,8 @@ interface TextInputCustomProps {
     | "slack-square"
     | "anticon";
   isPassword?: boolean;
+  keyboardTypeOptions?: KeyboardTypeOptions;
+  value?: string;
 }
 const TextInputCustom: FC<TextInputCustomProps> = ({
   props,
@@ -337,6 +340,8 @@ const TextInputCustom: FC<TextInputCustomProps> = ({
   icon,
   isPassword = false,
   onChange,
+  keyboardTypeOptions = "default",
+  value,
 }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [openPwd, setOpenPwd] = useState<boolean>(false);
@@ -386,6 +391,8 @@ const TextInputCustom: FC<TextInputCustomProps> = ({
           }}
         />
         <TextInput
+          value={value}
+          keyboardType={keyboardTypeOptions}
           numberOfLines={1}
           onChange={onChange}
           {...props}

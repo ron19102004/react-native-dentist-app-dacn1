@@ -1,4 +1,4 @@
-export const API_HOST_NAME = "192.168.1.3:8080"
+export const API_HOST_NAME = "192.168.1.12:8080"
 const API_URL_ORIGIN:string = 'http://' + API_HOST_NAME;
 
 

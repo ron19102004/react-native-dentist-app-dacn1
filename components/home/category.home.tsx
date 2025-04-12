@@ -5,6 +5,7 @@ import { useScreen } from "@/src/contexts";
 import { UseScreen } from "@/src/hooks/useScreen";
 import { Feather } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
+import { useRouter } from "expo-router";
 import React, { FC, useContext, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -14,15 +15,24 @@ interface Category {
   href: string;
 }
 const categories: Category[] = [
-  { href: "", img: Images.Service, label: "Dịch vụ" },
+  {
+    href: "/root/patient/home/service/all",
+    img: Images.Service,
+    label: "Dịch vụ",
+  },
   { href: "", img: Images.OnSale, label: "Ưu đãi" },
   { href: "", img: Images.Schedule, label: "Lịch hẹn" },
   { href: "", img: Images.Search, label: "Tra cứu" },
   { href: "", img: Images.File, label: "Hồ sơ" },
+  {
+    href: "/root/patient/home/expertise/all",
+    img: Images.Expertise,
+    label: "Chuyên môn",
+  },
 ];
 
 const CategoryHome = () => {
-  const { isMobile } = useScreen();;
+  const { isMobile } = useScreen();
   return (
     <View>
       <FlashList
@@ -40,6 +50,7 @@ const FlashItem: FC<{ isMobile: boolean; item: Category }> = ({
   item,
 }) => {
   const [isPress, setIsPress] = useState<boolean>(false);
+  const router = useRouter();
   return (
     <View
       style={{
@@ -49,22 +60,25 @@ const FlashItem: FC<{ isMobile: boolean; item: Category }> = ({
       }}
     >
       <Pressable
-        onPress={() => {}}
+        onPress={() => {
+          //@ts-ignore
+          router.navigate(item.href);
+        }}
         onPressIn={() => setIsPress(true)}
         onPressOut={() => setIsPress(false)}
       >
         <View
           style={{
-            backgroundColor: isPress
-              ? ColorTheme.Secondary
-              : ColorTheme.WhiteF1,
+            backgroundColor: isPress ? ColorTheme.Secondary : ColorTheme.White,
             width: "100%",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             padding: 10,
             borderRadius: 10,
-            ...BoxShadow({}),
+            ...BoxShadow({
+              color: ColorTheme.BlackB,
+            }),
           }}
         >
           <Image

@@ -42,7 +42,7 @@ export interface MedicineCategory {
   id: number;
   name: string;
   description: string;
-  image?: string; 
+  image?: string;
 }
 export interface MedicineCategory {
   id: number;
@@ -58,11 +58,9 @@ export interface Medicine {
   supplier: string;
   pricePerUnit: number;
   image?: string;
-  expiryDate: string; 
+  expiryDate: string;
   medicineCategory: Pick<MedicineCategory, "id" | "name">;
 }
-
-
 
 export interface SystemInfoData {
   systemName: string;
@@ -149,8 +147,8 @@ export interface DentalService {
   priceOrigin: number;
   priceCurrent: number;
   discount: number;
-  createdAt?: string; // hoặc Date nếu bạn xử lý dữ liệu ngày giờ
-  updatedAt?: string;
+  createdAt: string; // hoặc Date nếu bạn xử lý dữ liệu ngày giờ
+  updatedAt: string;
 }
 export interface Dentist {
   createdAt: string;
@@ -191,9 +189,9 @@ export interface TreatmentRecordService {
   createdAt: string;
 }
 export enum PaymentMethod {
-  CASH = 'CASH',
-  TRANSFER = 'TRANSFER',
-  INSTALLMENT = 'INSTALLMENT',
+  CASH = "CASH",
+  TRANSFER = "TRANSFER",
+  INSTALLMENT = "INSTALLMENT",
 }
 
 export interface Invoice {
@@ -214,3 +212,8 @@ export interface TreatmentRecord {
   invoice?: Invoice | null;
   medicineUseds?: MedicineUsed[];
 }
+
+export const textToGender = (value: string): Gender => {
+  if (value.toUpperCase() === "MALE") return Gender.MALE;
+  return Gender.FEMALE;
+};

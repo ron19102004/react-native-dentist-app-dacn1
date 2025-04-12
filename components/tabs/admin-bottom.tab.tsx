@@ -11,9 +11,8 @@ import {
 } from "react-native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import ColorTheme from "@/common/color.constant";
-import { RootScreen } from "@/common/screen.constant";
 
-const RootTabs: FC<BottomTabBarProps> = ({
+const AdminTabs: FC<BottomTabBarProps> = ({
   descriptors,
   state,
   navigation,
@@ -66,14 +65,11 @@ const TabIcon: FC<{ routeName: string; isFocused: boolean }> = ({
     fontWeight: isFocused ? "bold" : "normal",
   };
   switch (routeName) {
-    case RootScreen.Home: {
+    case "dashboard": {
       return <AntDesign name="home" style={style} />;
     }
-    case RootScreen.Profile: {
-      return <AntDesign name="user" style={style} />;
-    }
-    case RootScreen.Booking: {
-      return <Feather name="calendar" style={style} />;
+    case "system": {
+      return <AntDesign name="profile" style={style} />;
     }
     default: {
       throw new Error(routeName + " not found");
@@ -102,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RootTabs;
+export default AdminTabs;

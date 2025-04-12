@@ -33,6 +33,8 @@ const useNotification = (): NotificationContextType => {
         };
         socket.current.onmessage = async (event) => {
           const data = JSON.parse(event.data);
+          console.log(data);
+          
           if (data && data.message) {
             await showNotification("🔔 Thông báo mới", data.message);
           }

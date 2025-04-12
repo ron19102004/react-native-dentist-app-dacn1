@@ -8,6 +8,7 @@ const AuthLayout = () => {
     <Stack
       screenOptions={{
         headerShown: false,
+        animation: "fade",
       }}
       initialRouteName={AuthScreen.Login}
     >

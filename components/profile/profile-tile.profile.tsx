@@ -72,7 +72,7 @@ const ProfileTile: FC<ProfileTileProps> = ({ onPress = () => {} }) => {
               UID: {userCurrent?.id}
             </Text>
             <Text style={{ fontStyle: "italic", color: ColorTheme.Black }}>
-              Mã giới thiệu: {userCurrent?.id}
+              Mã giới thiệu: {userCurrent?.phone}
             </Text>
           </View>
         </View>

@@ -15,6 +15,8 @@ const RootLayout = () => {
       >
         <Stack.Screen name="(tab)" />
         <Stack.Screen name="profile" />
+        <Stack.Screen name="patient" />
+        <Stack.Screen name="admin" />
       </Stack>
     </ScreenProvider>
   );

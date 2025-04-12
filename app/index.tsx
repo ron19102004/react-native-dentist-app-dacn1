@@ -6,6 +6,7 @@ import { UseScreen } from "@/src/hooks/useScreen";
 import { ScreenContext } from "@/src/contexts/screen.context";
 import ColorTheme from "@/common/color.constant";
 import StatusBarCustom from "@/components/status-bar";
+import Toast from 'react-native-toast-message';
 
 const StartScreen = () => {
   const { width, height, isTablet } = useContext<UseScreen>(ScreenContext);

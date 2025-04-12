@@ -19,6 +19,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
 import { UserLoginRequest } from "@/src/apis/auth.api";
+import Toast from "react-native-toast-message";
 
 const schema = yup.object().shape({
   username: yup.string().required("Tên tài khoản là bắt buộc"),
@@ -36,14 +37,30 @@ const LoginScreen = () => {
     control,
     formState: { errors },
   } = useForm<UserLoginRequest>({ resolver: yupResolver(schema) });
-  const submit = async (data: UserLoginRequest) => {
-    await login(data);
-  };
+  const submit = useCallback(async (data: UserLoginRequest) => {
+    await login(
+      data,
+      () => {
+        Toast.show({
+          type: "success", // 'success' | 'error' | 'info'
+          text1: "Thông báo",
+          text2: "Đăng nhập thành công",
+        });
+      },
+      (err) => {
+        Toast.show({
+          type: "error", // 'success' | 'error' | 'info'
+          text1: "Lỗi",
+          text2: err,
+        });
+      }
+    );
+  }, []);
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
-      router.replace("/root");
+      router.navigate("/root");
     }
-  }, [isAuthenticated,isLoading]);
+  }, [isAuthenticated, isLoading]);
   return (
     <View style={styles.Main}>
       <StatusBarCustom bg={ColorTheme.White} style="dark-content" />
@@ -105,7 +122,7 @@ const LoginScreen = () => {
           >
             <Text style={{ marginRight: 5 }}>Bạn chưa có tài khoản?</Text>
             <Link
-              href={"/auth/register"}
+              href={"/register"}
               style={{
                 color: ColorTheme.Primary,
                 fontWeight: "600",
