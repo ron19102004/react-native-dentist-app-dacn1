@@ -3,6 +3,7 @@ import ButtonCustom from "@/components/button";
 import TextInputCustom from "@/components/input";
 import React, { useCallback, useContext, useEffect } from "react";
 import {
+  ActivityIndicator,
   Image,
   Keyboard,
   ScrollView,
@@ -83,7 +84,7 @@ const LoginScreen = () => {
                 <TextInputCustom
                   label="Tên đăng nhập"
                   onChangeText={onChange}
-                  icon="user"
+                  icon="person"
                   error={errors.username !== undefined}
                   errorMsg={errors.username?.message}
                 />
@@ -107,8 +108,7 @@ const LoginScreen = () => {
             }}
           />
           <ButtonCustom
-            disabled={isLoading}
-            title="Đăng nhập"
+            title={isLoading ? "Đang sử lý..." : "Đăng nhập"}
             onPress={handleSubmit(submit)}
             mt={15}
             mb={15}
@@ -138,6 +138,12 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: ColorTheme.WhiteF1,
+  },
   Main: {
     flex: 1,
     flexDirection: "column",

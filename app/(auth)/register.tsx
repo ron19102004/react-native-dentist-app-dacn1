@@ -88,7 +88,7 @@ const RegisterScreen = () => {
             <TextInputCustom
               label="Họ và tên"
               onChangeText={onChange}
-              icon="user"
+              icon="person"
               error={!!errors.fullName}
               errorMsg={errors.fullName?.message}
             />
@@ -117,7 +117,7 @@ const RegisterScreen = () => {
             <TextInputCustom
               label="Tên đăng nhập"
               onChangeText={onChange}
-              icon="user"
+              icon="person"
               error={!!errors.username}
               errorMsg={errors.username?.message}
             />
@@ -159,12 +159,11 @@ const RegisterScreen = () => {
           onChangeText={(text) => {
             setGenderText(text);
           }}
-          icon="idcard"
+          icon="carpenter"
           error={genderError !== null}
           errorMsg={genderError ? genderError : "Lỗi giới tính"}
         />
         <ButtonCustom
-          disabled={isLoading}
           title="Đăng ký"
           onPress={handleSubmit(onSubmit)}
           mt={20}
