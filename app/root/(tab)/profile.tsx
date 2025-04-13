@@ -23,11 +23,12 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
+import { Role } from "@/src/apis/model.d";
 
 const ProfileScreen = () => {
   const { isMobile } = useScreen();
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout, userCurrent } = useAuth();
   return (
     <Fragment>
       <StatusBarCustom bg={ColorTheme.Primary} style="light-content" />
@@ -65,6 +66,9 @@ const ProfileScreen = () => {
         <ScrollView>
           {/* Thông tin hồ sơ */}
           <ListTile
+            onPress={async () => {
+              router.navigate("/root/profile/details-profile");
+            }}
             mx={isMobile ? 15 : 30}
             center={(color) => (
               <Text style={{ ...styles.TileCenterStyle, color: color }}>
@@ -72,14 +76,14 @@ const ProfileScreen = () => {
               </Text>
             )}
             leading={(color) => (
-              <AntDesign
-                name="filetext1"
+              <Feather
+                name="file"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
@@ -106,14 +110,14 @@ const ProfileScreen = () => {
                   </Text>
                 )}
                 leading={(color) => (
-                  <AntDesign
-                    name="lock1"
+                  <Feather
+                    name="lock"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
                 suffix={(color) => (
-                  <AntDesign
-                    name="right"
+                  <MaterialIcons
+                    name="arrow-right"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
@@ -121,6 +125,58 @@ const ProfileScreen = () => {
             )}
             child={() => <ChangePassword />}
           />
+          {/* Chuyển sang giao diện admin  */}
+          {userCurrent && userCurrent.role === Role.ADMIN && (
+            <ListTile
+              onPress={async () => {
+                router.navigate("/root/admin/dashboard");
+              }}
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Bộ điều khiển - ADMIN
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="package"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+            />
+          )}
+          {/* Chuyển sang giao diện admin  */}
+          {userCurrent && userCurrent.role === Role.DENTIST && (
+            <ListTile
+              onPress={async () => {
+                router.navigate("/root/dentist/dashboard");
+              }}
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Bộ điều khiển - DENTIST
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="package"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+            />
+          )}
           {/* Sao chép mã giới thiệu */}
           <ListTile
             onPress={async () => {
@@ -137,14 +193,14 @@ const ProfileScreen = () => {
               </Text>
             )}
             leading={(color) => (
-              <AntDesign
+              <Feather
                 name="codepen"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
@@ -177,51 +233,14 @@ const ProfileScreen = () => {
                   />
                 )}
                 suffix={(color) => (
-                  <AntDesign
-                    name="right"
+                  <MaterialIcons
+                    name="arrow-right"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
               />
             )}
             child={() => <EnterReferralCode />}
-          />
-          {/* Liên hệ tổng đài */}
-          <BottomSheetCustom
-            bottomSheetModalStyle={{
-              marginHorizontal: isMobile ? 10 : 50,
-            }}
-            bottomSheetViewStyle={{
-              paddingVertical: 10,
-              paddingHorizontal: 10,
-              paddingBottom: 30,
-            }}
-            button={(ref) => (
-              <ListTile
-                mx={isMobile ? 15 : 30}
-                onPress={async () => {
-                  ref.current?.present();
-                }}
-                center={(color) => (
-                  <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                    Liên hệ tổng đài
-                  </Text>
-                )}
-                leading={(color) => (
-                  <AntDesign
-                    name="phone"
-                    style={{ ...styles.TileIcon, color: color }}
-                  />
-                )}
-                suffix={(color) => (
-                  <AntDesign
-                    name="right"
-                    style={{ ...styles.TileIcon, color: color }}
-                  />
-                )}
-              />
-            )}
-            child={(ref) => <ContactSupport bottomSheetModalRef={ref} />}
           />
           {/* Trình duyệt */}
           <ListTile
@@ -238,15 +257,39 @@ const ProfileScreen = () => {
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             onPress={async () => {
-              router.push(
+              router.navigate(
                 `/browser/${encodeURIComponent("https://www.google.com/")}`
               );
+            }}
+          />
+          {/* Thông tin hệ thống */}
+          <ListTile
+            mx={isMobile ? 15 : 30}
+            center={(color) => (
+              <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                Thông tin hệ thống
+              </Text>
+            )}
+            leading={(color) => (
+              <Feather
+                name="info"
+                style={{ ...styles.TileIcon, color: color }}
+              />
+            )}
+            suffix={(color) => (
+              <MaterialIcons
+                name="arrow-right"
+                style={{ ...styles.TileIcon, color: color }}
+              />
+            )}
+            onPress={async () => {
+              router.navigate("/root/profile/system-info");
             }}
           />
           {/* Đăng xuất */}
@@ -258,14 +301,14 @@ const ProfileScreen = () => {
               </Text>
             )}
             leading={(color) => (
-              <AntDesign
-                name="logout"
+              <Feather
+                name="log-out"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}

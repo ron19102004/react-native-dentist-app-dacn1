@@ -3,6 +3,7 @@ import ButtonCustom from "@/components/button";
 import TextInputCustom from "@/components/input";
 import React, { useCallback, useContext, useEffect } from "react";
 import {
+  ActivityIndicator,
   Image,
   Keyboard,
   ScrollView,
@@ -16,10 +17,10 @@ import { Link, useFocusEffect, useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoginRequestParam } from "@/src/apis/auth.api";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
-
+import { UserLoginRequest } from "@/src/apis/auth.api";
+import Toast from "react-native-toast-message";
 
 const schema = yup.object().shape({
   username: yup.string().required("Tên tài khoản là bắt buộc"),
@@ -31,19 +32,39 @@ const schema = yup.object().shape({
 const LoginScreen = () => {
   const router = useRouter();
   const { width, height, isTablet } = useScreen();
-  const {login} = useAuth()
+  const { login, isAuthenticated, isLoading } = useAuth();
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<LoginRequestParam>({ resolver: yupResolver(schema) });
-  const submit = async (data: LoginRequestParam) => {
-    await login(data)
-    router.replace("/root");
-  };
+  } = useForm<UserLoginRequest>({ resolver: yupResolver(schema) });
+  const submit = useCallback(async (data: UserLoginRequest) => {
+    await login(
+      data,
+      () => {
+        Toast.show({
+          type: "success", // 'success' | 'error' | 'info'
+          text1: "Thông báo",
+          text2: "Đăng nhập thành công",
+        });
+      },
+      (err) => {
+        Toast.show({
+          type: "error", // 'success' | 'error' | 'info'
+          text1: "Lỗi",
+          text2: err,
+        });
+      }
+    );
+  }, []);
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      router.navigate("/root");
+    }
+  }, [isAuthenticated, isLoading]);
   return (
     <View style={styles.Main}>
-      <StatusBarCustom bg={ColorTheme.White} style="dark-content"/>
+      <StatusBarCustom bg={ColorTheme.White} style="dark-content" />
       <View style={styles.Form}>
         <Image
           source={Images.LovePikDentist}
@@ -63,7 +84,7 @@ const LoginScreen = () => {
                 <TextInputCustom
                   label="Tên đăng nhập"
                   onChangeText={onChange}
-                  icon="user"
+                  icon="person"
                   error={errors.username !== undefined}
                   errorMsg={errors.username?.message}
                 />
@@ -87,7 +108,7 @@ const LoginScreen = () => {
             }}
           />
           <ButtonCustom
-            title="Đăng nhập"
+            title={isLoading ? "Đang sử lý..." : "Đăng nhập"}
             onPress={handleSubmit(submit)}
             mt={15}
             mb={15}
@@ -101,7 +122,7 @@ const LoginScreen = () => {
           >
             <Text style={{ marginRight: 5 }}>Bạn chưa có tài khoản?</Text>
             <Link
-              href={"/auth/register"}
+              href={"/register"}
               style={{
                 color: ColorTheme.Primary,
                 fontWeight: "600",
@@ -117,6 +138,12 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: ColorTheme.WhiteF1,
+  },
   Main: {
     flex: 1,
     flexDirection: "column",

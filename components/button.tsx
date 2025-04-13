@@ -10,6 +10,7 @@ interface ButtonCustomProps extends MarginStyle {
   fontSize?: number;
   bgFocus?: ColorTheme;
   onPress?: () => Promise<void>;
+  disabled?: boolean;
 }
 const ButtonCustom: FC<ButtonCustomProps> = ({
   title,
@@ -24,10 +25,12 @@ const ButtonCustom: FC<ButtonCustomProps> = ({
   mt,
   mx,
   my,
+  disabled,
 }) => {
   const [isFocus, setFocus] = useState<boolean>(false);
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       onTouchStart={() => setFocus(true)}
       onTouchEnd={() => setFocus(false)}

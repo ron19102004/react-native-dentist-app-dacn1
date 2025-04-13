@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextStyle,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { AntDesign, Feather } from "@expo/vector-icons";
@@ -36,7 +37,7 @@ const RootTabs: FC<BottomTabBarProps> = ({
           }
         };
         return (
-          <Pressable key={route.key} onPress={onPress}>
+          <TouchableOpacity key={route.key} onPress={onPress}>
             <View style={{ ...styles.Tab }}>
               <TabIcon routeName={route.name} isFocused={isFocused} />
               <Text
@@ -49,7 +50,7 @@ const RootTabs: FC<BottomTabBarProps> = ({
                 {label}
               </Text>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         );
       })}
     </View>

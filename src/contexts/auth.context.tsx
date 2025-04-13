@@ -1,14 +1,47 @@
 import { createContext, FC, ReactNode, useContext, useEffect } from "react";
 import _useAuth, { UseAuth } from "../hooks/useAuth";
 import { useRouter } from "expo-router";
+import {
+  UpdateUserRequest,
+  UserLoginRequest,
+  UserRegisterRequest,
+} from "../apis/auth.api";
 
 export const AuthContext = createContext<UseAuth>({
+  token: null,
   isAuthenticated: false,
+  isLoading: false,
+  isError: false,
+  errorMessage: null,
   userCurrent: null,
-  login: function (): Promise<void> {
+  login: function (
+    metadata: UserLoginRequest,
+    success: () => void,
+    errors: (error: string) => void
+  ): Promise<void> {
     throw new Error("Function not implemented.");
   },
   logout: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  register: function (
+    metadata: UserRegisterRequest,
+    success: () => void,
+    errors: (error: string) => void
+  ): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  ifAuthFn: function <T>(
+    fn: (token: string) => Promise<T>,
+    errors?: (error: string) => void
+  ): Promise<T | null> {
+    throw new Error("Function not implemented.");
+  },
+  updateInfo: function (
+    metadata: UpdateUserRequest,
+    success: () => void,
+    errors: (err: string) => void
+  ): Promise<void> {
     throw new Error("Function not implemented.");
   },
 });
@@ -18,15 +51,24 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
 
   const checkAuthentication = async (): Promise<void> => {
-    if (!value.isAuthenticated) {
-      router.replace("/auth/login");
-    } else {
-      router.replace("/root");
+    if (!value.isLoading) {
+      if (!value.isAuthenticated) {
+        router.replace("/login");
+      } else {
+        router.navigate("/root")
+        // router.replace("/root/admin/dashboard");
+        // router.navigate({
+        //   pathname: "/root/patient/home/expertise/[details]",
+        //   params: {
+        //     details: "chinh-nha-311601100",
+        //   },
+        // });
+      }
     }
     // router.replace(`/browser/${encodeURIComponent('https://github.com/ron19102004/react-native-dentist-app-dacn1')}`);
   };
   useEffect(() => {
-    checkAuthentication().then();
+    checkAuthentication();
   }, [value.isAuthenticated]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

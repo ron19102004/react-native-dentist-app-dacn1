@@ -20,7 +20,7 @@ import { FlashList } from "@shopify/flash-list";
 import CategoryHome from "@/components/home/category.home";
 import ServiceHot from "@/components/home/service-hot.home";
 import StatusBarCustom from "@/components/status-bar";
-import {  useScreen } from "@/src/contexts";
+import { useScreen } from "@/src/contexts";
 
 const HomeScreen = () => {
   const progress = useSharedValue<number>(0);
@@ -45,7 +45,7 @@ const HomeScreen = () => {
           width={width}
           mode="parallax"
           modeConfig={{
-            parallaxScrollingScale: 0.94,
+            parallaxScrollingScale: 0.9,
             parallaxScrollingOffset: 50,
           }}
           onProgressChange={progress}
@@ -62,6 +62,7 @@ const HomeScreen = () => {
             />
           )}
         />
+        {/* Danh mục */}
         <View
           style={{
             ...styles.section,
@@ -79,6 +80,7 @@ const HomeScreen = () => {
           </Text>
           <CategoryHome />
         </View>
+        {/* Dịch vụ hot */}
         <View
           style={{
             ...styles.section,
@@ -92,7 +94,7 @@ const HomeScreen = () => {
               fontSize: isMobile ? 18 : 22,
             }}
           >
-            Dịch vụ hot
+            Dịch vụ mới nhất
           </Text>
           <ServiceHot />
         </View>
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   section: {
-    backgroundColor: ColorTheme.Third,
+    backgroundColor: ColorTheme.White,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 10,

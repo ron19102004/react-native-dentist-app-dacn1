@@ -5,29 +5,30 @@ import React, { useContext } from "react";
 import { StatusBar, View } from "react-native";
 import ColorTheme from "@/common/color.constant";
 import { useScreen } from "@/src/contexts";
-
+import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
+export const screenOptionsCustom: BottomTabNavigationOptions = {
+  headerShown: false,
+  headerStyle: {
+    shadowOpacity: 0, // Xóa bóng trên iOS
+    elevation: 0, // Xóa bóng trên Android
+    borderBottomWidth: 0, // Xóa viền dưới header,
+  },
+  tabBarStyle: {
+    borderTopWidth: 0, // Xóa viền trên tab bar
+    elevation: 0, // Xóa bóng trên Android
+    shadowOpacity: 0, // Xóa bóng trên iOS
+  },
+  headerTitleStyle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: ColorTheme.Primary,
+  },
+};
 const TabLayout = () => {
   const { isMobile } = useScreen();
   return (
     <Tabs
-      screenOptions={{
-        headerShown: false,
-        headerStyle: {
-          shadowOpacity: 0, // Xóa bóng trên iOS
-          elevation: 0, // Xóa bóng trên Android
-          borderBottomWidth: 0, // Xóa viền dưới header,
-        },
-        tabBarStyle: {
-          borderTopWidth: 0, // Xóa viền trên tab bar
-          elevation: 0, // Xóa bóng trên Android
-          shadowOpacity: 0, // Xóa bóng trên iOS
-        },
-        headerTitleStyle: {
-          fontSize: 25,
-          fontWeight: "bold",
-          color: ColorTheme.Primary,
-        },
-      }}
+      screenOptions={screenOptionsCustom}
       tabBar={(props) => (
         <View
           style={{
@@ -47,9 +48,10 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
-        name={RootScreen.Booking}
+        name={RootScreen.MyAppointment}
         options={{
-          title: "Đặt hẹn",
+          title: "Lịch hẹn của tôi",
+          headerShown: true
         }}
       />
       <Tabs.Screen

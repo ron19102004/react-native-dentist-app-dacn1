@@ -3,13 +3,14 @@ import { BoxShadow } from "@/common/style.comman";
 import { useAuth, useScreen } from "@/src/contexts";
 import { UseScreen } from "@/src/hooks/useScreen";
 import { AntDesign } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React, { useContext, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const HomeTabNav = () => {
   const { userCurrent } = useAuth();
-
   const { isMobile } = useScreen();
+  const router = useRouter();
   return (
     <View
       style={{
@@ -29,19 +30,25 @@ const HomeTabNav = () => {
             color: ColorTheme.Primary,
           }}
         >
-          Xin chào {userCurrent?.name}
+          Xin chào {userCurrent?.fullName}
         </Text>
         <Text style={{ color: ColorTheme.Black, fontStyle: "italic" }}>
           Điểm tích lũy: 10 điểm
         </Text>
       </View>
-      <AntDesign
-        name="notification"
-        style={{
-          color: ColorTheme.Black,
-          fontSize: 18,
+      <TouchableOpacity
+        onPress={() => {
+          router.navigate("/root/patient/home/logs");
         }}
-      />
+      >
+        <AntDesign
+          name="notification"
+          style={{
+            color: ColorTheme.Black,
+            fontSize: 20,
+          }}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

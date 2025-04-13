@@ -1,41 +1,190 @@
 import { useEffect, useState } from "react";
-import { User } from "../apis/model";
-import { ToastAndroid } from "react-native";
-import { LoginRequestParam } from "../apis/auth.api";
+import { Gender, Role, User } from "../apis/model.d";
+import authApi, {
+  UpdateUserRequest,
+  UserLoginRequest,
+  UserRegisterRequest,
+} from "../apis/auth.api";
+import useStorage from "./useStorage";
 
+const ACCESS_TOKEN_KEY: string = "token";
 export interface UseAuth {
+  token: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage: string | null;
   userCurrent: User | null;
-  login(param: LoginRequestParam): Promise<void>;
+
+  login(
+    metadata: UserLoginRequest,
+    success: () => void,
+    errors: (error: string) => void
+  ): Promise<void>;
   logout(): Promise<void>;
+  register(
+    metadata: UserRegisterRequest,
+    success: () => void,
+    errors: (error: string) => void
+  ): Promise<void>;
+  ifAuthFn<T>(
+    fn: (token: string) => Promise<T>,
+    errors?: (error: string) => void
+  ): Promise<T | null>;
+  updateInfo(
+    metadata: UpdateUserRequest,
+    success: () => void,
+    errors: (err: string) => void
+  ): Promise<void>;
 }
 
 const _useAuth = (): UseAuth => {
-  const [_isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [_userCurrent, setUserService] = useState<User | null>(null);
-  const _login = async (param: LoginRequestParam): Promise<void> => {
-    setIsAuthenticated(true);
-    setUserService({ name: param.username, uid: 12345 });
-  };
-  const _logout = async (): Promise<void> => {
-    setIsAuthenticated(false);
-    ToastAndroid.show("Đã đăng xuất", ToastAndroid.LONG);
+  const [token, setToken] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [userCurrent, setUserCurrent] = useState<User | null>(null);
+  const {
+    get: getStorage,
+    remove: removeStorage,
+    save: saveStorage,
+  } = useStorage();
+
+  const ifAuthFn = async <T,>(
+    fn: (token: string) => Promise<T>,
+    errors?: (error: string) => void
+  ) => {
+    try {
+      if (isAuthenticated && token) {
+        return await fn(token);
+      } else {
+        if (errors) errors("Require authentication");
+      }
+    } catch (error) {
+      if (errors) errors("Request error");
+    }
+    return null;
   };
 
-  const checkAuthentication = async (): Promise<void> => {
-    // setIsAuthenticated(true);
-    // setUserService({ name: "Trần Ngọc Anh Dũng", uid: 123435 });
+  const login = async (
+    metadata: UserLoginRequest,
+    success: () => void,
+    errors: (error: string) => void
+  ): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await authApi.userLogin(metadata);
+      response;
+      if (response.code !== 200) {
+        setIsError(true);
+        setErrorMessage(response.message);
+        setIsLoading(false);
+        errors(response.message);
+        return;
+      }
+      const { accessToken, user } = response.data!;
+      setToken(accessToken);
+      setIsAuthenticated(true);
+      setUserCurrent(user);
+      success();
+      await saveStorage(ACCESS_TOKEN_KEY, accessToken);
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Failed to login");
+      errors("Failed to login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const logout = async () => {
+    setToken(null);
+    setIsAuthenticated(false);
+    setUserCurrent(null);
+    await removeStorage(ACCESS_TOKEN_KEY);
+  };
+  const register = async (
+    metadata: UserRegisterRequest,
+    success: () => void,
+    errors: (error: string) => void
+  ): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await authApi.userRegister(metadata);
+      console.log(response);
+      if (response.code !== 200) {
+        setIsError(true);
+        setErrorMessage(response.message);
+        setIsLoading(false);
+        errors(response.message);
+        return;
+      }
+      success();
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Failed to register");
+      errors("Failed to register");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const initializeAuth = async () => {
+    console.log("Auth initialized");
+    try {
+      setIsLoading(true);
+      const token = await getStorage(ACCESS_TOKEN_KEY);
+      if (token) {
+        const getUserInfo = await authApi.getInfoUser(token);
+        if (getUserInfo && getUserInfo.code === 200) {
+          setIsAuthenticated(true);
+          setToken(token);
+          setUserCurrent(getUserInfo.data);
+        }
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Failed to initialize authentication");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const updateInfo = async (
+    metadata: UpdateUserRequest,
+    success: () => void,
+    errors: (err: string) => void
+  ) => {
+    await ifAuthFn<void>(
+      async (token) => {
+        const res = await authApi.updateInfo(metadata, token);
+        if (res.code === 200) {
+          initializeAuth();
+          success();
+          return;
+        }
+        errors(res.message);
+      },
+      (error) => {
+        errors(error);
+      }
+    );
   };
   useEffect(() => {
-    checkAuthentication()
-      .then()
-      .catch((e) => {});
-  }, [0]);
+    initializeAuth();
+  }, []);
   return {
-    isAuthenticated: _isAuthenticated,
-    userCurrent: _userCurrent,
-    login: _login,
-    logout: _logout,
+    token: token,
+    isAuthenticated: isAuthenticated,
+    isLoading: isLoading,
+    isError: isError,
+    errorMessage: errorMessage,
+    userCurrent: userCurrent,
+    login: login,
+    logout: logout,
+    register: register,
+    ifAuthFn: ifAuthFn,
+    updateInfo: updateInfo,
   };
 };
 export default _useAuth;

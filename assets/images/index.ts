@@ -12,7 +12,7 @@ import Support from "@/assets/images/support.png"; //@ts-ignore
 import Service from "@/assets/images/service.png"; //@ts-ignore
 import OnSale from "@/assets/images/onSale.png"; //@ts-ignore
 import Schedule from "@/assets/images/schedule.png"; //@ts-ignore
-
+import Expertise from "@/assets/images/expertise.png"; //@ts-ignore
 export default {
   LovePikDentist,
   ReactLogo,
@@ -26,5 +26,6 @@ export default {
   Support,
   Service,
   OnSale,
-  Schedule
+  Schedule,
+  Expertise
 };
