@@ -57,7 +57,7 @@ export interface GetAppointmentOptions {
 const getAppointments = async (
   token: string,
   options: GetAppointmentOptions
-): Promise<ApiResponse<GetAppointmentResponse>> => {
+): Promise<ApiResponse<GetAppointmentResponse[]>> => {
   const respone = await axios.get(
     appointmentUserApi(`?page=${options.page}&size=${options.size}`),
     {

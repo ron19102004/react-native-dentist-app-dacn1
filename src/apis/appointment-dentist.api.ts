@@ -107,13 +107,13 @@ export interface AppointmentDentistResponse {
     email: string;
     phone: string;
   };
-  treatmentRecord: TreatmentRecord;
+  treatmentRecord?: TreatmentRecord;
 }
 
 const getAppointmentsToday = async (
   token: string,
   userId: number
-): Promise<ApiResponse<AppointmentDentistResponse>> => {
+): Promise<ApiResponse<AppointmentDentistResponse[]>> => {
   const respone = await axios.get(appointmentDentistApi(`/today/${userId}`), {
     headers: {
       "Content-Type": "application/json",
@@ -121,6 +121,22 @@ const getAppointmentsToday = async (
       Authorization: `Bearer ${token}`,
     },
   });
+  return respone.data;
+};
+const getAppointmentDetails = async (
+  token: string,
+  appointmentId: number
+): Promise<ApiResponse<AppointmentDentistResponse>> => {
+  const respone = await axios.get(
+    appointmentDentistApi(`/item/${appointmentId}`),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return respone.data;
 };
 
@@ -164,6 +180,7 @@ const removeMedicine = async (
   );
   return respone.data;
 };
+
 export default {
   confirmAppointment,
   cancelAppointment,
@@ -172,4 +189,5 @@ export default {
   getAppointmentsToday,
   removeSerivce,
   removeMedicine,
+  getAppointmentDetails
 };

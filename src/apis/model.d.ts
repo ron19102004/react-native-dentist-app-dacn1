@@ -100,7 +100,16 @@ export enum WorkStatus {
   RETIRED = "RETIRED",
   PERSONAL_LEAVE = "PERSONAL_LEAVE",
 }
-
+export function WorkStatusToViVN(workStatus: WorkStatus): string {
+  switch (workStatus) {
+    case WorkStatus.DOING:
+      return "Đang làm việc";
+    case WorkStatus.RETIRED:
+      return "Đang nghỉ phép";
+    case WorkStatus.PERSONAL_LEAVE:
+      return "Đã nghỉ việc";
+  }
+}
 export interface Expertise {
   id: number;
   name: string;
@@ -124,6 +133,36 @@ export enum MedicineUnit {
   MG = "MG", // Milligram
   G = "G", // Gram
   DROP = "DROP", // Giọt
+}
+export function translateMedicineUnitToVietnamese(unit: MedicineUnit): string {
+  switch (unit) {
+    case MedicineUnit.TABLET:
+      return "Viên nén";
+    case MedicineUnit.CAPSULE:
+      return "Viên nang";
+    case MedicineUnit.VIAL:
+      return "Lọ nhỏ (ống tiêm)";
+    case MedicineUnit.BOTTLE:
+      return "Chai";
+    case MedicineUnit.BOX:
+      return "Hộp";
+    case MedicineUnit.SACHET:
+      return "Gói";
+    case MedicineUnit.TUBE:
+      return "Tuýp";
+    case MedicineUnit.IMPULSE:
+      return "Ống";
+    case MedicineUnit.ML:
+      return "Millilít (ml)";
+    case MedicineUnit.MG:
+      return "Miligram (mg)";
+    case MedicineUnit.G:
+      return "Gram (g)";
+    case MedicineUnit.DROP:
+      return "Giọt";
+    default:
+      return unit;
+  }
 }
 export interface Medicine {
   id: number;
@@ -159,7 +198,18 @@ export interface Dentist {
   active: boolean;
   user: User;
 }
+export interface Staff {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  dateStart: string; // yyyy-MM-dd
+  workStatus: WorkStatus;
+  active: boolean;
+  user: User;
+  position: string,
+}
 export interface DentistResponse {
+  id:number
   dateStart: string; // yyyy-MM-dd
   workStatus: WorkStatus;
   expertise: Expertise;

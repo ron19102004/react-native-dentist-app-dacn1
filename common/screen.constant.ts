@@ -1,7 +1,7 @@
 export enum RootScreen {
   Home = "index",
   Profile = "profile",
-  Booking = 'booking'
+  MyAppointment = 'my-appointment'
 }
 
 export enum AuthScreen{

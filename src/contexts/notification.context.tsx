@@ -5,10 +5,14 @@ import useNotification, {
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 export const NotificationContext = createContext<NotificationContextType>({
-    socket: null,
-    showNotification: function (title: string, body: string): Promise<void> {
-        throw new Error("Function not implemented.");
-    }
+  socket: null,
+  showNotification: function (title: string, body: string): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  notificationData: [],
+  loadNotification: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  }
 });
 
 Notifications.setNotificationHandler({

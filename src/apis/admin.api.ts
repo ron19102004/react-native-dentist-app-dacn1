@@ -1,5 +1,13 @@
 import axios from "axios";
-import { ApiResponse, DataNone, Role, SystemInfoData, WorkStatus } from "./model.d";
+import {
+  ApiResponse,
+  DataNone,
+  Dentist,
+  Role,
+  Staff,
+  SystemInfoData,
+  WorkStatus,
+} from "./model.d";
 import { adminApi } from "../constants/api.constant";
 
 /**
@@ -131,6 +139,27 @@ const updateSystemInfo = async (
   return response.data;
 };
 
+export interface AccountInfoRole {
+  fullName: string;
+  username: string;
+  role: Role;
+  staff?: Staff;
+  dentist?: Dentist;
+}
+const getInfoRole = async (
+  gmail: string,
+  token: string
+): Promise<ApiResponse<AccountInfoRole>> => {
+  const response = await axios.get(adminApi(`/role-info/${gmail}`), {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export default {
   getSystemInfo,
   lockUser,
@@ -139,4 +168,5 @@ export default {
   updateDentistInfo,
   updateRole,
   updateSystemInfo,
+  getInfoRole,
 };

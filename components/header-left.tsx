@@ -1,4 +1,4 @@
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { TouchableOpacity } from "react-native";
@@ -11,7 +11,7 @@ const HeaderLeft = () => {
         router.back();
       }}
     >
-      <AntDesign name="arrowleft" size={23} />
+      <Feather name="arrow-left" size={23} />
     </TouchableOpacity>
   );
 };

@@ -66,10 +66,10 @@ const TabIcon: FC<{ routeName: string; isFocused: boolean }> = ({
   };
   switch (routeName) {
     case "dashboard": {
-      return <AntDesign name="home" style={style} />;
+      return <Feather name="home" style={style} />;
     }
     case "system": {
-      return <AntDesign name="profile" style={style} />;
+      return <Feather name="user" style={style} />;
     }
     default: {
       throw new Error(routeName + " not found");
