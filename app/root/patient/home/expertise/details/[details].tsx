@@ -11,7 +11,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import WebView from "react-native-webview";
 import useExpertise from "@/src/hooks/useExpertise.hook";
 import ColorTheme from "@/common/color.constant";
@@ -24,6 +24,7 @@ const DetailsExpertiseScreen: React.FC = () => {
   const { details } = useLocalSearchParams();
   const [expertise, setExpertise] = useState<Expertise | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const router = useRouter()
   const init = async (slug: string) => {
     setRefreshing(true);
     await getDetailsBySlug(
@@ -92,7 +93,9 @@ const DetailsExpertiseScreen: React.FC = () => {
       </View>
 
       {/* Nút hành động */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={()=>{
+        router.navigate("/root/patient/appointment/booking")
+      }}>
         <FontAwesome name="calendar-check-o" size={20} color="#fff" />
         <Text style={styles.buttonText}>Đặt lịch khám</Text>
       </TouchableOpacity>

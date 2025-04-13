@@ -94,7 +94,7 @@ const HomeScreen = () => {
               fontSize: isMobile ? 18 : 22,
             }}
           >
-            Dịch vụ
+            Dịch vụ mới nhất
           </Text>
           <ServiceHot />
         </View>

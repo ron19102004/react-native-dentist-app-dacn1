@@ -103,7 +103,7 @@ const EditDetailsProfile = () => {
                   value={getValues("fullName")}
                   label="Họ và tên"
                   onChangeText={onChange}
-                  icon="user"
+                  icon="person"
                   error={!!errors.fullName}
                   errorMsg={errors.fullName?.message}
                 />
@@ -146,7 +146,7 @@ const EditDetailsProfile = () => {
               value={genderText}
               label="Giới tính (Male/Female)"
               onChangeText={(text) => setGenderText(text)}
-              icon="idcard"
+              icon="carpenter"
               error={genderError !== null}
               errorMsg={genderError || ""}
             />

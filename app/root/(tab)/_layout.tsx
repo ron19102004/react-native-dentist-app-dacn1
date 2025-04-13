@@ -48,9 +48,10 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
-        name={RootScreen.Booking}
+        name={RootScreen.MyAppointment}
         options={{
-          title: "Đặt hẹn",
+          title: "Lịch hẹn của tôi",
+          headerShown: true
         }}
       />
       <Tabs.Screen

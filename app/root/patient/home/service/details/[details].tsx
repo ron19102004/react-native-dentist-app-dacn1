@@ -9,7 +9,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
 
 import ColorTheme from "@/common/color.constant";
@@ -22,7 +22,7 @@ const DetailsServiceScreen: React.FC = () => {
   const { details } = useLocalSearchParams();
   const [service, setService] = useState<DentalService | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-
+  const router = useRouter();
   const init = async (slug: string) => {
     setRefreshing(true);
     await getDentalServiceBySlug(
@@ -107,7 +107,12 @@ const DetailsServiceScreen: React.FC = () => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          router.navigate("/root/patient/appointment/booking");
+        }}
+      >
         <FontAwesome name="calendar-check-o" size={20} color="#fff" />
         <Text style={styles.buttonText}>Đặt lịch khám</Text>
       </TouchableOpacity>

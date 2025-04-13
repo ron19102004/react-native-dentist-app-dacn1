@@ -1,7 +1,8 @@
 import { Stack } from "expo-router";
 import React from "react";
+import { StyleSheet, View } from "react-native";
 
-const PatientLayout = () => {
+const DentistLayout = () => {
   return (
     <Stack
       screenOptions={{
@@ -9,10 +10,10 @@ const PatientLayout = () => {
         animation: "fade",
       }}
     >
-      <Stack.Screen name="home" />
+      <Stack.Screen name="(tab)" />
       <Stack.Screen name="appointment" />
     </Stack>
   );
 };
 
-export default PatientLayout;
+export default DentistLayout;

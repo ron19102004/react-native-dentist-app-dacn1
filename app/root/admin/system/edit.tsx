@@ -122,7 +122,7 @@ const SystemAdminEditScreen = () => {
             value={getValues("systemName")}
             label="Tên hệ thống"
             onChangeText={onChange}
-            icon="user"
+            icon="text-rotation-none"
             error={!!errors.systemName}
             errorMsg={errors.systemName?.message}
           />
@@ -137,7 +137,7 @@ const SystemAdminEditScreen = () => {
             value={getValues("systemVersion")}
             label="Phiên bản"
             onChangeText={onChange}
-            icon="database"
+            icon="dataset"
             error={!!errors.systemVersion}
             errorMsg={errors.systemVersion?.message}
           />
@@ -152,7 +152,7 @@ const SystemAdminEditScreen = () => {
             value={getValues("systemAuthor")}
             label="Tác giả"
             onChangeText={onChange}
-            icon="user"
+            icon="person"
             error={!!errors.systemAuthor}
             errorMsg={errors.systemAuthor?.message}
           />
@@ -197,7 +197,7 @@ const SystemAdminEditScreen = () => {
             value={getValues("systemAddress")}
             label="Địa chỉ"
             onChangeText={onChange}
-            icon="caretright"
+            icon="map"
             error={!!errors.systemAddress}
             errorMsg={errors.systemAddress?.message}
           />

@@ -5,8 +5,9 @@ import { useScreen } from "@/src/contexts";
 import { View } from "react-native";
 import ColorTheme from "@/common/color.constant";
 import AdminTabs from "@/components/tabs/admin-bottom.tab";
+import DentistTabs from "@/components/tabs/dentist-bottom.tab";
 
-const TabAdminLayout = () => {
+const TabDentistLayout = () => {
   const { isMobile } = useScreen();
 
   return (
@@ -20,7 +21,7 @@ const TabAdminLayout = () => {
             backgroundColor: ColorTheme.WhiteE,
           }}
         >
-          <AdminTabs {...props} />
+          <DentistTabs {...props} />
         </View>
       )}
     >
@@ -28,17 +29,18 @@ const TabAdminLayout = () => {
         name="dashboard"
         options={{
           title: "Bộ điều khiển",
-          headerShown: true
+          headerShown: true,
         }}
       />
       <Tabs.Screen
-        name="system"
+        name="appointment-today"
         options={{
-          title: "Hệ thống",
+          title: "Lịch hẹn hôm nay",
+          headerShown: true,
         }}
       />
     </Tabs>
   );
 };
 
-export default TabAdminLayout;
+export default TabDentistLayout;

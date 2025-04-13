@@ -76,14 +76,14 @@ const ProfileScreen = () => {
               </Text>
             )}
             leading={(color) => (
-              <AntDesign
-                name="filetext1"
+              <Feather
+                name="file"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
@@ -110,14 +110,14 @@ const ProfileScreen = () => {
                   </Text>
                 )}
                 leading={(color) => (
-                  <AntDesign
-                    name="lock1"
+                  <Feather
+                    name="lock"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
                 suffix={(color) => (
-                  <AntDesign
-                    name="right"
+                  <MaterialIcons
+                    name="arrow-right"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
@@ -138,20 +138,45 @@ const ProfileScreen = () => {
                 </Text>
               )}
               leading={(color) => (
-                <AntDesign
-                  name="sync"
+                <Feather
+                  name="package"
                   style={{ ...styles.TileIcon, color: color }}
                 />
               )}
               suffix={(color) => (
-                <AntDesign
-                  name="right"
+                <MaterialIcons
+                  name="arrow-right"
                   style={{ ...styles.TileIcon, color: color }}
                 />
               )}
             />
           )}
-
+          {/* Chuyển sang giao diện admin  */}
+          {userCurrent && userCurrent.role === Role.DENTIST && (
+            <ListTile
+              onPress={async () => {
+                router.navigate("/root/dentist/dashboard");
+              }}
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Bộ điều khiển - DENTIST
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="package"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+            />
+          )}
           {/* Sao chép mã giới thiệu */}
           <ListTile
             onPress={async () => {
@@ -168,14 +193,14 @@ const ProfileScreen = () => {
               </Text>
             )}
             leading={(color) => (
-              <AntDesign
+              <Feather
                 name="codepen"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
@@ -208,8 +233,8 @@ const ProfileScreen = () => {
                   />
                 )}
                 suffix={(color) => (
-                  <AntDesign
-                    name="right"
+                  <MaterialIcons
+                    name="arrow-right"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
@@ -232,8 +257,8 @@ const ProfileScreen = () => {
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
@@ -253,13 +278,13 @@ const ProfileScreen = () => {
             )}
             leading={(color) => (
               <Feather
-                name="globe"
+                name="info"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
@@ -276,14 +301,14 @@ const ProfileScreen = () => {
               </Text>
             )}
             leading={(color) => (
-              <AntDesign
-                name="logout"
+              <Feather
+                name="log-out"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
             suffix={(color) => (
-              <AntDesign
-                name="right"
+              <MaterialIcons
+                name="arrow-right"
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}

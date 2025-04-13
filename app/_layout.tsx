@@ -5,7 +5,7 @@ import NotificationProvider, {
 import ScreenProvider from "@/src/contexts/screen.context";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
-import React from "react";
+import React, { Fragment } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast, {
@@ -16,28 +16,30 @@ import Toast, {
 
 const AppLayout = () => {
   return (
-    <ScreenProvider>
-      <GestureHandlerRootView>
-        <BottomSheetModalProvider>
-          <AuthProvider>
-            <NotificationProvider>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  animation: "ios_from_right",
-                }}
-              >
-                <Stack.Screen name="(auth)" />
-                <Stack.Screen name="index" />
-                <Stack.Screen name="root" />
-                <Stack.Screen name="browser/[url]" />
-              </Stack>
-              <Toast autoHide config={toastConfig} />
-            </NotificationProvider>
-          </AuthProvider>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </ScreenProvider>
+    <Fragment>
+      <ScreenProvider>
+        <GestureHandlerRootView>
+          <BottomSheetModalProvider>
+            <AuthProvider>
+              <NotificationProvider>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    animation: "ios_from_right",
+                  }}
+                >
+                  <Stack.Screen name="(auth)" />
+                  <Stack.Screen name="index" />
+                  <Stack.Screen name="root" />
+                  <Stack.Screen name="browser/[url]" />
+                </Stack>
+              </NotificationProvider>
+            </AuthProvider>
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </ScreenProvider>
+      <Toast autoHide config={toastConfig} />
+    </Fragment>
   );
 };
 
@@ -53,7 +55,7 @@ export const toastConfig = {
         fontSize: 14,
         color: "#333",
       }}
-      text2NumberOfLines={10}
+      text2NumberOfLines={50}
     />
   ),
   error: (props: ToastProps) => (
@@ -67,7 +69,7 @@ export const toastConfig = {
         fontSize: 14,
         color: "#333",
       }}
-      text2NumberOfLines={10}
+      text2NumberOfLines={50}
     />
   ),
   info: (props: ToastProps) => (
@@ -81,7 +83,7 @@ export const toastConfig = {
         fontSize: 14,
         color: "#333",
       }}
-      text2NumberOfLines={10}
+      text2NumberOfLines={50}
     />
   ),
   default: (props: ToastProps) => (
@@ -95,7 +97,7 @@ export const toastConfig = {
         fontSize: 14,
         color: "#333",
       }}
-      text2NumberOfLines={10}
+      text2NumberOfLines={50}
     />
   ),
 };

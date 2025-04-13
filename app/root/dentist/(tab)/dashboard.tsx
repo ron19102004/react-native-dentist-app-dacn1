@@ -19,28 +19,28 @@ interface ToolModel {
 
 const tools: ToolModel[] = [
   {
-    href: "/root/admin/account/lock-acc",
-    icon: "lock",
-    label: "Khóa tài khoản",
+    href: "/root/dentist/appointment/confirm",
+    icon: "check-circle",
+    label: "Xác nhận lịch hẹn",
   },
   {
-    href: "/root/admin/account/unlock-acc",
-    icon: "unlock",
-    label: "Mở khóa tài khoản",
-  },
-  {
-    href: "/root/admin/account/edit-staff",
+    href: "/root/dentist/appointment/confirm",
     icon: "edit",
-    label: "Chỉnh thông tin nhân viên",
+    label: "Xử lý hồ sơ điều trị",
   },
   {
-    href: "/root/admin/account/edit-admin",
+    href: "/root/dentist/appointment/confirm",
     icon: "edit",
-    label: "Chỉnh thông tin bác sĩ",
+    label: "Xử lý dịch vụ hồ sơ",
+  },
+  {
+    href: "/root/dentist/appointment/confirm",
+    icon: "edit",
+    label: "Xử lý thuốc hồ sơ",
   },
 ];
 
-const DashboardAdminScreen = () => {
+const DashboardDentistScreen = () => {
   const { isMobile } = useScreen();
   const router = useRouter();
 
@@ -57,7 +57,7 @@ const DashboardAdminScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>🔧 Công cụ quản trị</Text>
+      <Text style={styles.title}>🔧 Công cụ quản lý</Text>
       <FlashList
         contentContainerStyle={{}}
         data={tools}
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DashboardAdminScreen;
+export default DashboardDentistScreen;

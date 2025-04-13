@@ -11,6 +11,7 @@ const AdminLayout = () => {
     >
       <Stack.Screen name="(tab)" />
       <Stack.Screen name="system" />
+      <Stack.Screen name="account" />
     </Stack>
   );
 };
