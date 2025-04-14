@@ -1,4 +1,4 @@
-export const API_HOST_NAME = "192.168.213.179:8080"
+export const API_HOST_NAME = "192.168.1.4:8080"
 // export const API_HOST_NAME = "103.172.79.67";
 // export const API_HOST_NAME = "toilaron.icu";
 const API_URL_ORIGIN: string = "http://" + API_HOST_NAME;

@@ -11,7 +11,8 @@ interface ButtonCustomProps extends MarginStyle {
   bgFocus?: ColorTheme;
   onPress?: () => Promise<void>;
   disabled?: boolean;
-  style?:StyleProp<ViewStyle>
+  style?:StyleProp<ViewStyle>,
+  flex?: number
 }
 const ButtonCustom: FC<ButtonCustomProps> = ({
   title,
@@ -27,7 +28,8 @@ const ButtonCustom: FC<ButtonCustomProps> = ({
   mx,
   my,
   disabled,
-  style
+  style,
+  flex
 }) => {
   const [isFocus, setFocus] = useState<boolean>(false);
   return (
@@ -45,6 +47,7 @@ const ButtonCustom: FC<ButtonCustomProps> = ({
         marginHorizontal: mx ?? 15,
         marginRight: mr,
         marginTop: mt,
+        flex: flex
       }}
     >
       <Text style={{ ...styles.Title, color: textColor, fontSize: fontSize }}>

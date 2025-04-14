@@ -56,7 +56,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         router.replace("/login");
       } else {
         router.navigate("/root")
-        // router.replace("/root/dentist/dashboard");
+        // router.replace("/root/dentist/appointment/process-medicine");
       }
     }
     // router.replace(`/browser/${encodeURIComponent('https://github.com/ron19102004/react-native-dentist-app-dacn1')}`);

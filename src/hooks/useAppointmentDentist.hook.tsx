@@ -3,6 +3,7 @@ import appointmentDentistApi, {
   AddMedicineToAppointmentData,
   AppointmentDentistResponse,
 } from "../apis/appointment-dentist.api";
+import { MedicineUsed, TreatmentRecordService } from "../apis/model";
 import { useAuth } from "../contexts";
 
 interface AppointmentDentistContextType {
@@ -49,6 +50,16 @@ interface AppointmentDentistContextType {
     appointmentId: number,
     medicines: number[],
     success: () => void,
+    errors: (err: string) => void
+  ): Promise<void>;
+  getTreatmentRecordServices(
+    appointmentId: number,
+    success: (data: TreatmentRecordService[]) => void,
+    errors: (err: string) => void
+  ): Promise<void>;
+  getMedicineUsed(
+    appointmentId: number,
+    success: (data: MedicineUsed[]) => void,
     errors: (err: string) => void
   ): Promise<void>;
 }
@@ -240,6 +251,50 @@ const useAppointmentDentist = (): AppointmentDentistContextType => {
       }
     );
   };
+  const getTreatmentRecordServices = async (
+    appointmentId: number,
+    success: (data: TreatmentRecordService[]) => void,
+    errors: (err: string) => void
+  ) => {
+    await ifAuthFn(
+      async (token) => {
+        const res = await appointmentDentistApi.getTreatmentRecordServices(
+          appointmentId,
+          token,
+        );
+        if (res.code === 200) {
+          success(res.data ?? []);
+          return;
+        }
+        errors(res.message);
+      },
+      (err) => {
+        errors(err);
+      }
+    );
+  };
+  const getMedicineUsed = async (
+    appointmentId: number,
+    success: (data: MedicineUsed[]) => void,
+    errors: (err: string) => void
+  ) => {
+    await ifAuthFn(
+      async (token) => {
+        const res = await appointmentDentistApi.getMedicineUsed(
+          appointmentId,
+          token,
+        );
+        if (res.code === 200) {
+          success(res.data ?? []);
+          return;
+        }
+        errors(res.message);
+      },
+      (err) => {
+        errors(err);
+      }
+    );
+  };
   return {
     confirmAppointment: confirmAppointment,
     addDentalServiceAppointment: addDentalServiceAppointment,
@@ -248,7 +303,9 @@ const useAppointmentDentist = (): AppointmentDentistContextType => {
     removeSerivce: removeSerivce,
     removeMedicine: removeMedicine,
     getAppointmentDetails:getAppointmentDetails,
-    cancelAppointment
+    cancelAppointment: cancelAppointment,
+    getTreatmentRecordServices:getTreatmentRecordServices,
+    getMedicineUsed:getMedicineUsed
   };
 };
 export default useAppointmentDentist;

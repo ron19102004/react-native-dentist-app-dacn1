@@ -59,7 +59,7 @@ export interface Medicine {
   pricePerUnit: number;
   image?: string;
   expiryDate: string;
-  medicineCategory: Pick<MedicineCategory, "id" | "name">;
+  medicineCategory?: Pick<MedicineCategory, "id" | "name">;
 }
 
 export interface SystemInfoData {
@@ -230,6 +230,8 @@ export interface MedicineUsed {
   name: string;
   pricePerUnit: number;
   unit: MedicineUnit;
+  medicine: Medicine
+
 }
 export interface TreatmentRecordService {
   id: number;
