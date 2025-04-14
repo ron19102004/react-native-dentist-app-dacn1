@@ -10,6 +10,7 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
 import { useScreen } from "@/src/contexts";
 import { useRouter } from "expo-router";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface ToolModel {
   icon: string;
@@ -38,6 +39,11 @@ const tools: ToolModel[] = [
     icon: "edit",
     label: "Chỉnh thông tin bác sĩ",
   },
+  {
+    href: "/root/admin/account/update-role",
+    icon: "edit",
+    label: "Chỉnh vai trò tài khoản",
+  },
 ];
 
 const DashboardAdminScreen = () => {
@@ -57,15 +63,17 @@ const DashboardAdminScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>🔧 Công cụ quản trị</Text>
-      <FlashList
-        contentContainerStyle={{}}
-        data={tools}
-        renderItem={renderToolItem}
-        numColumns={isMobile ? 2 : 4}
-        estimatedItemSize={100}
-        ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
-      />
+      <ScrollView>
+        <Text style={styles.title}>🔧 Công cụ quản trị</Text>
+        <FlashList
+          contentContainerStyle={{}}
+          data={tools}
+          renderItem={renderToolItem}
+          numColumns={isMobile ? 1 : 2}
+          estimatedItemSize={100}
+          ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };

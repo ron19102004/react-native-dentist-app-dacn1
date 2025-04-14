@@ -1,16 +1,18 @@
 import ColorTheme from "@/common/color.constant";
 import { MarginStyle } from "@/common/style.comman";
 import React, { FC, useState } from "react";
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { Button, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 
 interface ButtonCustomProps extends MarginStyle {
   title: string;
-  color?: ColorTheme;
+  color?: ColorTheme | string;
   textColor?: ColorTheme;
   fontSize?: number;
   bgFocus?: ColorTheme;
   onPress?: () => Promise<void>;
   disabled?: boolean;
+  style?:StyleProp<ViewStyle>,
+  flex?: number
 }
 const ButtonCustom: FC<ButtonCustomProps> = ({
   title,
@@ -26,6 +28,8 @@ const ButtonCustom: FC<ButtonCustomProps> = ({
   mx,
   my,
   disabled,
+  style,
+  flex
 }) => {
   const [isFocus, setFocus] = useState<boolean>(false);
   return (
@@ -43,6 +47,7 @@ const ButtonCustom: FC<ButtonCustomProps> = ({
         marginHorizontal: mx ?? 15,
         marginRight: mr,
         marginTop: mt,
+        flex: flex
       }}
     >
       <Text style={{ ...styles.Title, color: textColor, fontSize: fontSize }}>

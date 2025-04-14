@@ -43,8 +43,6 @@ const RegisterScreen = () => {
     if (!["male", "female"].includes(genderText.toLowerCase())) {
       setGenderError("Giới tính phải là male hoặc female");
       return;
-    } else {
-      setGenderError(null);
     }
     await registerUser(
       {
@@ -67,6 +65,8 @@ const RegisterScreen = () => {
         });
       }
     );
+    setGenderText("")
+    setGenderError(null);
   }, []);
 
   useEffect(() => {

@@ -7,6 +7,8 @@ import Toast from "react-native-toast-message";
 import ColorTheme from "@/common/color.constant";
 import { AppointmentDentistResponse } from "@/src/apis/appointment-dentist.api";
 import useAppointmentDentist from "@/src/hooks/useAppointmentDentist.hook";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
 
 const AppointmentDetails = () => {
   const { details } = useLocalSearchParams();
@@ -49,134 +51,147 @@ const AppointmentDetails = () => {
   }
 
   return (
-    <View style={[styles.card, { borderLeftColor: getBorderColor() }]}>
-      <Text style={styles.title}>
-        <Feather name="user" size={18} />{" "}
-        {appointment.patientResponseDto.fullName}
-      </Text>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={[styles.card, { borderLeftColor: getBorderColor() }]}>
+          <Text style={styles.title}>
+            <Feather name="user" size={18} />{" "}
+            {appointment.patientResponseDto.fullName}
+          </Text>
 
-      <Text style={styles.text}>
-        <Feather name="calendar" size={16} /> Ngày hẹn:{" "}
-        <Text style={styles.highlight}>{appointment.date}</Text>
-      </Text>
-      <Text style={styles.text}>
-        <Feather name="phone" size={16} />{" "}
-        {appointment.patientResponseDto.phone}
-      </Text>
-      <Text style={styles.text}>
-        <Feather name="mail" size={16} /> {appointment.patientResponseDto.email}
-      </Text>
-      <Text style={styles.text}>
-        <Feather name="clipboard" size={16} /> Ghi chú: {appointment.notes}
-      </Text>
-
-      {appointment.treatmentRecord && (
-        <>
-          <View style={styles.divider} />
-          <Text style={styles.subTitle}>
-            <MaterialIcons
-              name="medical-services"
-              size={18}
-              color={ColorTheme.Primary}
-            />{" "}
-            Điều trị
+          <Text style={styles.text}>
+            <Feather name="calendar" size={16} /> Ngày hẹn:{" "}
+            <Text style={styles.highlight}>{appointment.date}</Text>
           </Text>
           <Text style={styles.text}>
-            🦷 {appointment.treatmentRecord.treatment}
+            <Feather name="phone" size={16} />{" "}
+            {appointment.patientResponseDto.phone}
           </Text>
           <Text style={styles.text}>
-            📋 Chẩn đoán: {appointment.treatmentRecord.diagnosis}
+            <Feather name="mail" size={16} />{" "}
+            {appointment.patientResponseDto.email}
+          </Text>
+          <Text style={styles.text}>
+            <Feather name="clipboard" size={16} /> Ghi chú: {appointment.notes}
           </Text>
 
-          {/* Dịch vụ */}
-          {appointment.treatmentRecord.treatmentRecordServices &&
-            appointment.treatmentRecord.treatmentRecordServices?.length > 0 && (
-              <>
-                <Text style={styles.subTitle}>
-                  <MaterialIcons name="construction" size={16} /> Dịch vụ
-                </Text>
-                {appointment.treatmentRecord.treatmentRecordServices.map(
-                  (s) => (
-                    <View key={s.id} style={styles.serviceBox}>
-                      <Text style={styles.text}>
-                        🔧 {s.dentalService.name} -{" "}
-                        <Text style={styles.highlight}>
-                          {s.priceCurrent.toLocaleString()}đ
-                        </Text>
-                      </Text>
-                      <Text
-                        style={[
-                          styles.text,
-                          { fontStyle: "italic", marginLeft: 6 },
-                        ]}
-                      >
-                        📝 {s.note}
-                      </Text>
-                    </View>
-                  )
-                )}
-              </>
-            )}
-
-          {/* Thuốc */}
-          {appointment.treatmentRecord.medicineUseds &&
-            appointment.treatmentRecord.medicineUseds?.length > 0 && (
-              <>
-                <Text style={styles.subTitle}>
-                  <MaterialIcons name="medication" size={18} /> Thuốc sử dụng
-                </Text>
-                {appointment.treatmentRecord.medicineUseds.map((m) => (
-                  <View key={m.id} style={styles.medicineBox}>
-                    <Text style={styles.text}>
-                      💊 {m.name} ({m.quantity} {m.unit}) -{" "}
-                      <Text style={styles.highlight}>
-                        {m.pricePerUnit.toLocaleString()}đ
-                      </Text>
-                    </Text>
-                    <Text
-                      style={[
-                        styles.text,
-                        { fontStyle: "italic", marginLeft: 6 },
-                      ]}
-                    >
-                      📖 Cách dùng: {m.guide}
-                    </Text>
-                  </View>
-                ))}
-              </>
-            )}
-
-          {/* Hóa đơn */}
-          {appointment.treatmentRecord.invoice ? (
+          {appointment.treatmentRecord && (
             <>
+              <View style={styles.divider} />
               <Text style={styles.subTitle}>
-                <Feather name="file-text" size={18} /> Hóa đơn
+                <MaterialIcons
+                  name="medical-services"
+                  size={18}
+                  color={ColorTheme.Primary}
+                />{" "}
+                Điều trị
               </Text>
               <Text style={styles.text}>
-                💰 Tổng tiền:{" "}
-                <Text style={styles.highlight}>
-                  {appointment.treatmentRecord.invoice.totalPrice.toLocaleString()}
-                  đ
-                </Text>
+                🦷 {appointment.treatmentRecord.treatment}
               </Text>
               <Text style={styles.text}>
-                👩‍⚕️ Thu ngân: {appointment.treatmentRecord.invoice.collectorName}
+                📋 Chẩn đoán: {appointment.treatmentRecord.diagnosis}
               </Text>
-              <Text style={styles.text}>
-                📅 Ngày thanh toán:{" "}
-                {appointment.treatmentRecord.invoice.paymentDate || (
-                  <Text style={{ color: "red" }}>Chưa thanh toán</Text>
+
+              {/* Dịch vụ */}
+              {appointment.treatmentRecord.treatmentRecordServices &&
+                appointment.treatmentRecord.treatmentRecordServices?.length >
+                  0 && (
+                  <>
+                    <Text style={styles.subTitle}>
+                      <MaterialIcons name="construction" size={16} /> Dịch vụ
+                    </Text>
+                    {appointment.treatmentRecord.treatmentRecordServices.map(
+                      (s) => (
+                        <View key={s.id} style={styles.serviceBox}>
+                          <Text style={styles.text}>
+                            🔧 {s.dentalService.name} -{" "}
+                            <Text style={styles.highlight}>
+                            $ {s.priceCurrent.toLocaleString()}
+                            </Text>
+                          </Text>
+                          <Text
+                            style={[
+                              styles.text,
+                              { fontStyle: "italic", marginLeft: 6 },
+                            ]}
+                          >
+                            📝 {s.note}
+                          </Text>
+                        </View>
+                      )
+                    )}
+                  </>
                 )}
-              </Text>
+
+              {/* Thuốc */}
+              {appointment.treatmentRecord.medicineUseds &&
+                appointment.treatmentRecord.medicineUseds?.length > 0 && (
+                  <>
+                    <Text style={styles.subTitle}>
+                      <MaterialIcons name="medication" size={18} /> Thuốc sử
+                      dụng
+                    </Text>
+                    {appointment.treatmentRecord.medicineUseds.map((m) => (
+                      <View key={m.id} style={styles.medicineBox}>
+                        <Text style={styles.text}>
+                          💊 {m.name} ({m.quantity} {m.unit}) -{" "}
+                          <Text style={styles.highlight}>
+                          $ {m.pricePerUnit.toLocaleString()}
+                          </Text>
+                        </Text>
+                        <Text
+                          style={[
+                            styles.text,
+                            { fontStyle: "italic", marginLeft: 6 },
+                          ]}
+                        >
+                          📖 Cách dùng: {m.guide}
+                        </Text>
+                      </View>
+                    ))}
+                  </>
+                )}
+
+              {/* Hóa đơn */}
+              {appointment.treatmentRecord.invoice ? (
+                <>
+                  <Text style={styles.subTitle}>
+                    <Feather name="file-text" size={18} /> Hóa đơn
+                  </Text>
+                  <Text style={styles.text}>
+                    💰 Tổng tiền:{" "}
+                    <Text style={styles.highlight}>
+                    $ {appointment.treatmentRecord.invoice.totalPrice.toLocaleString()}
+                    </Text>
+                  </Text>
+                  <Text style={styles.text}>
+                    👩‍⚕️ Thu ngân:{" "}
+                    {appointment.treatmentRecord.invoice.collectorName}
+                  </Text>
+                  <Text style={styles.text}>
+                    📅 Ngày thanh toán:{" "}
+                    {appointment.treatmentRecord.invoice.paymentDate ? (
+                      <Text style={styles.highlight}>
+                        {new Date(
+                          appointment.treatmentRecord.invoice.paymentDate
+                        ).toLocaleString("vi-VN")}
+                      </Text>
+                    ) : (
+                      <Text style={{ color: "red" }}>Chưa thanh toán</Text>
+                    )}
+                  </Text>
+                </>
+              ) : (
+                <Text style={[styles.text, { color: "#999", marginTop: 10 }]}>
+                  🚫 Chưa có hóa đơn
+                </Text>
+              )}
             </>
-          ) : (
-            <Text style={[styles.text, { color: "#999", marginTop: 10 }]}>
-              🚫 Chưa có hóa đơn
-            </Text>
           )}
-        </>
-      )}
-    </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

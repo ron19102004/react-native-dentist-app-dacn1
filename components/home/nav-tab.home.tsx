@@ -2,7 +2,7 @@ import ColorTheme from "@/common/color.constant";
 import { BoxShadow } from "@/common/style.comman";
 import { useAuth, useScreen } from "@/src/contexts";
 import { UseScreen } from "@/src/hooks/useScreen";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useContext, useState } from "react";
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -41,11 +41,11 @@ const HomeTabNav = () => {
           router.navigate("/root/patient/home/logs");
         }}
       >
-        <AntDesign
-          name="notification"
+        <MaterialIcons
+          name="circle-notifications"
           style={{
-            color: ColorTheme.Black,
-            fontSize: 20,
+            color: ColorTheme.Primary,
+            fontSize: 30,
           }}
         />
       </TouchableOpacity>

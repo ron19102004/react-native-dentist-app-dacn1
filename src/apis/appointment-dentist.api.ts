@@ -3,7 +3,9 @@ import {
   ApiResponse,
   AppointmentStatus,
   DataNone,
+  MedicineUsed,
   TreatmentRecord,
+  TreatmentRecordService,
 } from "./model.d";
 import { appointmentDentistApi } from "../constants/api.constant";
 
@@ -107,13 +109,13 @@ export interface AppointmentDentistResponse {
     email: string;
     phone: string;
   };
-  treatmentRecord: TreatmentRecord;
+  treatmentRecord?: TreatmentRecord;
 }
 
 const getAppointmentsToday = async (
   token: string,
   userId: number
-): Promise<ApiResponse<AppointmentDentistResponse>> => {
+): Promise<ApiResponse<AppointmentDentistResponse[]>> => {
   const respone = await axios.get(appointmentDentistApi(`/today/${userId}`), {
     headers: {
       "Content-Type": "application/json",
@@ -121,6 +123,22 @@ const getAppointmentsToday = async (
       Authorization: `Bearer ${token}`,
     },
   });
+  return respone.data;
+};
+const getAppointmentDetails = async (
+  token: string,
+  appointmentId: number
+): Promise<ApiResponse<AppointmentDentistResponse>> => {
+  const respone = await axios.get(
+    appointmentDentistApi(`/item/${appointmentId}`),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return respone.data;
 };
 
@@ -164,7 +182,42 @@ const removeMedicine = async (
   );
   return respone.data;
 };
+
+const getTreatmentRecordServices = async (
+  appointmentId: number,
+  token: string
+): Promise<ApiResponse<Array<TreatmentRecordService>>> => {
+  const respone = await axios.get(
+    appointmentDentistApi(`/treatment-record-services/${appointmentId}`),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return respone.data;
+};
+const getMedicineUsed= async (
+  appointmentId: number,
+  token: string
+): Promise<ApiResponse<Array<MedicineUsed>>> => {
+  const respone = await axios.get(
+    appointmentDentistApi(`/medicine-used/${appointmentId}`),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return respone.data;
+};
 export default {
+  getTreatmentRecordServices,
+  getMedicineUsed,
   confirmAppointment,
   cancelAppointment,
   addDentalServiceAppointment,
@@ -172,4 +225,5 @@ export default {
   getAppointmentsToday,
   removeSerivce,
   removeMedicine,
+  getAppointmentDetails,
 };

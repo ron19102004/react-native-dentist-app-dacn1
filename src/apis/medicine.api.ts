@@ -100,7 +100,6 @@ const searchMedicines = async (
   } else {
     stringBuilder.add("1");
   }
-  console.log(stringBuilder.build());
   const response = await axios.get<ApiResponse<Array<Medicine>>>(
     medicineApi(stringBuilder.build()),
     {

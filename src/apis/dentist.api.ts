@@ -1,16 +1,7 @@
 import axios from "axios";
 import { dentistApi } from "../constants/api.constant";
-import { ApiResponse, Expertise, WorkStatus } from "./model.d";
-
-export interface DentistResponse {
-  expertise: Expertise;
-  fullName: string;
-  email: string;
-  phone: string;
-  dateStart: string;
-  workStatus: WorkStatus;
-}
-/**
+import { ApiResponse, DentistResponse, Expertise, WorkStatus } from "./model.d";
+/*
  * Role: NON
  */
 const getDentists = async (

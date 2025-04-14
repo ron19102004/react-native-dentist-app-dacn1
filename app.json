@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "DTL Dentist App",
+    "name": "Dentist TDL",
     "slug": "dentist-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,14 +25,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/toothLogo.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/toothLogo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

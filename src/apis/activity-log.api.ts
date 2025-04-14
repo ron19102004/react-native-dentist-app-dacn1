@@ -14,7 +14,7 @@ const getActivityLogs = async (
   token: string
 ): Promise<ApiResponse<Array<ActivityLog>>> => {
   const response = await axios.get<ApiResponse<Array<ActivityLog>>>(
-    activityLogApi(""),
+    activityLogApi("/logs"),
     {
       headers: {
         Accept: "application/json",

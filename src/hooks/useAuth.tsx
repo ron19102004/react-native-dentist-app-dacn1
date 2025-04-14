@@ -6,6 +6,7 @@ import authApi, {
   UserRegisterRequest,
 } from "../apis/auth.api";
 import useStorage from "./useStorage";
+import { AxiosError } from "axios";
 
 const ACCESS_TOKEN_KEY: string = "token";
 export interface UseAuth {
@@ -63,6 +64,10 @@ const _useAuth = (): UseAuth => {
       }
     } catch (error) {
       if (errors) errors("Request error");
+      if(error instanceof AxiosError){
+        console.log(error.response);
+      }
+      alert(error)
     }
     return null;
   };
@@ -75,7 +80,6 @@ const _useAuth = (): UseAuth => {
     try {
       setIsLoading(true);
       const response = await authApi.userLogin(metadata);
-      response;
       if (response.code !== 200) {
         setIsError(true);
         setErrorMessage(response.message);
@@ -93,6 +97,7 @@ const _useAuth = (): UseAuth => {
       setIsError(true);
       setErrorMessage("Failed to login");
       errors("Failed to login");
+      alert(error)
     } finally {
       setIsLoading(false);
     }

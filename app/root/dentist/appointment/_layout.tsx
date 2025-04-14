@@ -17,6 +17,20 @@ const DentistAppointmentLayout = () => {
           headerShown: true,
         }}
       />
+      <Stack.Screen
+        name="process-service"
+        options={{
+          title: "♨️ Xử lý dịch vụ hồ sơ",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="process-medicine"
+        options={{
+          title: "♨️ Xử lý thuốc hồ sơ",
+          headerShown: true,
+        }}
+      />
        <Stack.Screen
         name="details/[details]"
         options={{

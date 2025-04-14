@@ -34,7 +34,7 @@ const EnterReferralCode = () => {
               render={({ field: { onChange } }) => {
                 return (
                   <TextInputCustom
-                    icon="codepen"
+                    icon="text-snippet"
                     label="Nhập mã giới thiệu"
                     onChangeText={onChange}
                     error={errors.code !== undefined}
