@@ -36,6 +36,13 @@ const AdminAccountLayout = () => {
           headerShown: true,
         }}
       />
+       <Stack.Screen
+        name="update-role"
+        options={{
+          title: "Cập nhật vai trò tài khoản",
+          headerShown: true,
+        }}
+      />
     </Stack>
   );
 };

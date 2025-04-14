@@ -7,28 +7,30 @@ import { StyleSheet, Text, View } from "react-native";
 
 const RenderUser: FC<{
   user: AccountInfoRole | null;
-  requireRole: Role;
+  requireRole: Role | null;
 }> = ({ user, requireRole }) => {
-  if (requireRole === Role.DENTIST) {
-    if (user?.role === Role.STAFF) {
-      return (
-        <View style={stylesRender.container}>
-          <Text style={stylesRender.errorText}>
-            Gmail không thuộc về bác sĩ
-          </Text>
-        </View>
-      );
+  if(requireRole){
+    if (requireRole === Role.DENTIST) {
+      if (user?.role === Role.STAFF) {
+        return (
+          <View style={stylesRender.container}>
+            <Text style={stylesRender.errorText}>
+              Gmail không thuộc về bác sĩ
+            </Text>
+          </View>
+        );
+      }
     }
-  }
-  if (requireRole === Role.STAFF) {
-    if (user?.role === Role.DENTIST) {
-      return (
-        <View style={stylesRender.container}>
-          <Text style={stylesRender.errorText}>
-            Gmail không thuộc về nhân viên
-          </Text>
-        </View>
-      );
+    if (requireRole === Role.STAFF) {
+      if (user?.role === Role.DENTIST) {
+        return (
+          <View style={stylesRender.container}>
+            <Text style={stylesRender.errorText}>
+              Gmail không thuộc về nhân viên
+            </Text>
+          </View>
+        );
+      }
     }
   }
   return (

@@ -1,7 +1,7 @@
-// export const API_HOST_NAME = "192.168.1.12:8080"
+export const API_HOST_NAME = "192.168.213.179:8080"
 // export const API_HOST_NAME = "103.172.79.67";
-export const API_HOST_NAME = "toilaron.icu";
-const API_URL_ORIGIN: string = "https://" + API_HOST_NAME;
+// export const API_HOST_NAME = "toilaron.icu";
+const API_URL_ORIGIN: string = "http://" + API_HOST_NAME;
 
 export const authApi = (url: string) => {
   return `${API_URL_ORIGIN}/api/auth${url}`;

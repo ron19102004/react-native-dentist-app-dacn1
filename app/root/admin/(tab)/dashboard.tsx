@@ -38,6 +38,11 @@ const tools: ToolModel[] = [
     icon: "edit",
     label: "Chỉnh thông tin bác sĩ",
   },
+  {
+    href: "/root/admin/account/update-role",
+    icon: "edit",
+    label: "Chỉnh vai trò tài khoản",
+  },
 ];
 
 const DashboardAdminScreen = () => {
@@ -62,7 +67,7 @@ const DashboardAdminScreen = () => {
         contentContainerStyle={{}}
         data={tools}
         renderItem={renderToolItem}
-        numColumns={isMobile ? 2 : 4}
+        numColumns={2}
         estimatedItemSize={100}
         ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
       />

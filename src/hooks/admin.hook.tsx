@@ -5,10 +5,10 @@ import adminApi, {
   AccountInfoRole,
   UpdateDentistInfoRequest,
   UpdateStaffInfoRequest,
+  UpdateUserRoleRequest,
 } from "../apis/admin.api";
 
 interface AdminContextType {
-  changeStaffInfo(name: string): Promise<void>;
   updateSystemInfo(
     data: SystemInfoData,
     success: () => void,
@@ -42,10 +42,34 @@ interface AdminContextType {
     success: (data: AccountInfoRole | null) => void,
     errors: (err: string) => void
   ): Promise<void>;
+  updateRole(
+    data: UpdateUserRoleRequest,
+    success: () => void,
+    errors: (err: string) => void
+  ): Promise<void>;
 }
 
 const useAdmin = (): AdminContextType => {
   const { ifAuthFn } = useContext(AuthContext);
+  const updateRole = async (
+    data: UpdateUserRoleRequest,
+    success: () => void,
+    errors: (err: string) => void
+  ) => {
+    await ifAuthFn(
+      async (token) => {
+        const res = await adminApi.updateRole(token, data);
+        if (res.code === 200) {
+          success();
+          return;
+        }
+        errors(res.message);
+      },
+      (err) => {
+        errors(err);
+      }
+    );
+  };
   const getInfoUserHasRole = async (
     gmail: string,
     success: (data: AccountInfoRole | null) => void,
@@ -159,12 +183,10 @@ const useAdmin = (): AdminContextType => {
       }
     );
   };
-  const changeStaffInfo = async (name: string): Promise<void> => {};
   const getSystemInfo = async () => {
     return await adminApi.getSystemInfo();
   };
   return {
-    changeStaffInfo: changeStaffInfo,
     updateSystemInfo: updateSystemInfo,
     getSystemInfo: getSystemInfo,
     lockAccount: lockAccount,
@@ -172,6 +194,7 @@ const useAdmin = (): AdminContextType => {
     updateAccStaff: updateAccStaff,
     updateAccAdmin: updateAccAdmin,
     getInfoUserHasRole: getInfoUserHasRole,
+    updateRole: updateRole,
   };
 };
 export default useAdmin;
