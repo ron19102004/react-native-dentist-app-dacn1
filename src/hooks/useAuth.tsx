@@ -30,7 +30,8 @@ export interface UseAuth {
   ): Promise<void>;
   ifAuthFn<T>(
     fn: (token: string) => Promise<T>,
-    errors?: (error: string) => void
+    errors?: (error: string) => void,
+    retries?: number
   ): Promise<T | null>;
   updateInfo(
     metadata: UpdateUserRequest,
@@ -54,7 +55,8 @@ const _useAuth = (): UseAuth => {
 
   const ifAuthFn = async <T,>(
     fn: (token: string) => Promise<T>,
-    errors?: (error: string) => void
+    errors?: (error: string) => void,
+    retries: number = 3
   ) => {
     try {
       if (isAuthenticated && token) {
@@ -63,11 +65,13 @@ const _useAuth = (): UseAuth => {
         if (errors) errors("Require authentication");
       }
     } catch (error) {
-      if (errors) errors("Request error");
-      if(error instanceof AxiosError){
-        console.log(error.response);
+      if (retries > 0) {
+        console.log("retries: " + retries);
+        return await ifAuthFn(fn, errors, retries - 1);
       }
-      alert(error)
+      if (error instanceof AxiosError) {
+        alert(error);
+      }
     }
     return null;
   };
@@ -95,9 +99,18 @@ const _useAuth = (): UseAuth => {
       await saveStorage(ACCESS_TOKEN_KEY, accessToken);
     } catch (error) {
       setIsError(true);
-      setErrorMessage("Failed to login");
-      errors("Failed to login");
-      alert(error)
+      if (error instanceof AxiosError) {
+        if (error.status === 401) {
+          setErrorMessage("Mật khẩu không chính xác");
+          errors("Mật khẩu không chính xác");
+        } else {
+          setErrorMessage("Login fail");
+          errors("Login fail");
+        }
+      } else {
+        setErrorMessage("Login fail");
+        errors("Login fail");
+      }
     } finally {
       setIsLoading(false);
     }

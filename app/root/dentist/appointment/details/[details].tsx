@@ -83,11 +83,11 @@ const AppointmentDetails = () => {
                   name="medical-services"
                   size={18}
                   color={ColorTheme.Primary}
-                />{" "}
+                />
                 Điều trị
               </Text>
               <Text style={styles.text}>
-                🦷 {appointment.treatmentRecord.treatment}
+                🦷 Phương pháp điều trị: {appointment.treatmentRecord.treatment}
               </Text>
               <Text style={styles.text}>
                 📋 Chẩn đoán: {appointment.treatmentRecord.diagnosis}

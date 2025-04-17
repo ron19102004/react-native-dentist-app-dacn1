@@ -3,7 +3,7 @@ import ButtonCustom from "@/components/button";
 import TextInputCustom from "@/components/input";
 import { AppointmentDentistResponse } from "@/src/apis/appointment-dentist.api";
 import useAppointmentDentist from "@/src/hooks/useAppointmentDentist.hook";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,15 +17,41 @@ import { translateStatus } from "../(tab)/appointment-today";
 import { AppointmentStatus } from "@/src/apis/model.d";
 import { useRouter } from "expo-router";
 import BottomSheetCustom from "@/components/bottom-sheet";
+import { debounce } from "@/src/hooks/debounce";
 
-const ConfirmAppointment = () => {
-  const { getAppointmentDetails, confirmAppointment, cancelAppointment } =
-    useAppointmentDentist();
-  const [appointmentId, setAppointmentId] = useState<number | null>(null);
+const ProcessStatusppointment = () => {
+  const {
+    getAppointmentDetails,
+    confirmAppointment,
+    cancelAppointment,
+    finishAppointment,
+  } = useAppointmentDentist();
   const [appointment, setAppointment] =
     useState<null | AppointmentDentistResponse>(null);
   const [noteCancel, setNoteCancel] = useState<string | null>(null);
   const router = useRouter();
+  const finishAppointmentHandler = async () => {
+    if (appointment) {
+      await finishAppointment(
+        appointment.id,
+        () => {
+          Toast.show({
+            type: "success", // 'success' | 'error' | 'info'
+            text1: "Thông báo",
+            text2: "Xác nhận thành công",
+          });
+          router.back();
+        },
+        (err) => {
+          Toast.show({
+            type: "error", // 'success' | 'error' | 'info'
+            text1: "Lỗi",
+            text2: err,
+          });
+        }
+      );
+    }
+  };
   const confirmHandler = async () => {
     if (appointment) {
       await confirmAppointment(
@@ -80,21 +106,24 @@ const ConfirmAppointment = () => {
     }
     setNoteCancel(null);
   };
-  const loadAppointment = async (appointmentId: number) => {
-    await getAppointmentDetails(
-      appointmentId,
-      (data) => {
-        setAppointment(data);
-      },
-      (err) => {
-        Toast.show({
-          type: "error",
-          text1: "Lỗi",
-          text2: err,
-        });
-      }
-    );
-  };
+  const loadAppointment = useCallback(
+    debounce(async (appointmentId: number) => {
+      await getAppointmentDetails(
+        appointmentId,
+        (data) => {
+          setAppointment(data);
+        },
+        (err) => {
+          Toast.show({
+            type: "error",
+            text1: "Lỗi",
+            text2: err,
+          });
+        }
+      );
+    }, 500),
+    []
+  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: ColorTheme.White }}>
@@ -106,21 +135,8 @@ const ConfirmAppointment = () => {
             keyboardTypeOptions="numeric"
             onChangeText={(text) => {
               const value = parseInt(text);
-              setAppointmentId(isNaN(value) ? null : value);
-            }}
-          />
-          <ButtonCustom
-            title="Tìm kiếm"
-            mt={10}
-            onPress={async () => {
-              if (appointmentId) {
-                await loadAppointment(appointmentId);
-              } else {
-                Toast.show({
-                  type: "error",
-                  text1: "Lỗi",
-                  text2: "Vui lòng không để trống mã hồ sơ",
-                });
+              if (!isNaN(value)) {
+                loadAppointment(value);
               }
             }}
           />
@@ -246,6 +262,20 @@ const ConfirmAppointment = () => {
             </View>
           </>
         ) : null}
+        {appointment &&
+        appointment.appointmentStatus === AppointmentStatus.CONFIRMED ? (
+          <>
+            <ButtonCustom
+              onPress={async () => {
+                await finishAppointmentHandler();
+              }}
+              mt={20}
+              title="Xác nhận hoàn thành"
+              color="#008001"
+              bgFocus={ColorTheme.BlackB}
+            />
+          </>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -279,4 +309,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmAppointment;
+export default ProcessStatusppointment;

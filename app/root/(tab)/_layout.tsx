@@ -1,8 +1,8 @@
 import RootTabs from "@/components/tabs/root-bottom.tab";
 import { RootScreen } from "@/common/screen.constant";
-import { Tabs } from "expo-router";
-import React, { useContext } from "react";
-import { StatusBar, View } from "react-native";
+import { Tabs, useNavigation } from "expo-router";
+import React, { useContext, useEffect, useState } from "react";
+import { Keyboard, StatusBar, View } from "react-native";
 import ColorTheme from "@/common/color.constant";
 import { useScreen } from "@/src/contexts";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
@@ -26,12 +26,29 @@ export const screenOptionsCustom: BottomTabNavigationOptions = {
 };
 const TabLayout = () => {
   const { isMobile } = useScreen();
+  const [hideTabar, setHideTabar] = useState<boolean>(false);
+  const navigation = useNavigation();
+
+  // Ẩn tab bar khi bàn phím bật
+  useEffect(() => {
+    const showSub = Keyboard.addListener("keyboardDidShow", () =>
+      setHideTabar(true)
+    );
+    const hideSub = Keyboard.addListener("keyboardDidHide", () =>
+      setHideTabar(false)
+    );
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, [navigation]);
   return (
     <Tabs
-      screenOptions={screenOptionsCustom}
+      screenOptions={{ ...screenOptionsCustom, tabBarHideOnKeyboard: true }}
       tabBar={(props) => (
         <View
           style={{
+            display: hideTabar ? "none" : "flex",
             padding: 10,
             paddingHorizontal: isMobile ? 10 : 150,
             backgroundColor: ColorTheme.WhiteE,
@@ -51,7 +68,14 @@ const TabLayout = () => {
         name={RootScreen.MyAppointment}
         options={{
           title: "Lịch hẹn của tôi",
-          headerShown: true
+          headerShown: true,
+        }}
+      />
+      <Tabs.Screen
+        name={RootScreen.ChatBot}
+        options={{
+          title: "Chat bot",
+          headerShown: true,
         }}
       />
       <Tabs.Screen

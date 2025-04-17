@@ -177,6 +177,32 @@ const ProfileScreen = () => {
               )}
             />
           )}
+          {/* Chuyển sang giao diện staff  */}
+          {userCurrent && userCurrent.role === Role.STAFF && (
+            <ListTile
+              onPress={async () => {
+                router.navigate("/root/staff/dashboard");
+              }}
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Bộ điều khiển - STAFF
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="package"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+            />
+          )}
           {/* Sao chép mã giới thiệu */}
           <ListTile
             onPress={async () => {

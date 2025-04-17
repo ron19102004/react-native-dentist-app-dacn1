@@ -15,7 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import ColorTheme from "@/common/color.constant";
 import ButtonCustom from "@/components/button";
 import TextInputCustom from "@/components/input";
-import useAdmin from "@/src/hooks/admin.hook";
+import useAdmin from "@/src/hooks/useAdmin.hook";
 import ListView from "@/components/list";
 import Select from "@/components/select";
 import Checkbox from "@/components/checkbox";

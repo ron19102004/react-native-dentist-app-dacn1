@@ -2,6 +2,7 @@ import appointmentDentistApi, {
   AddDentalServiceToAppointmentData,
   AddMedicineToAppointmentData,
   AppointmentDentistResponse,
+  UpdateTreatmentRecordRequest,
 } from "../apis/appointment-dentist.api";
 import { MedicineUsed, TreatmentRecordService } from "../apis/model";
 import { useAuth } from "../contexts";
@@ -14,7 +15,7 @@ interface AppointmentDentistContextType {
   ): Promise<void>;
   cancelAppointment(
     appointmentId: number,
-    note:string,
+    note: string,
     success: () => void,
     errors: (err: string) => void
   ): Promise<void>;
@@ -62,9 +63,63 @@ interface AppointmentDentistContextType {
     success: (data: MedicineUsed[]) => void,
     errors: (err: string) => void
   ): Promise<void>;
+  updateTreatmentRecord(
+    appointmentId: number,
+    data: UpdateTreatmentRecordRequest,
+    success: () => void,
+    errors: (err: string) => void
+  ): Promise<void>;
+  finishAppointment(
+    appointmentId: number,
+    success: () => void,
+    errors: (err: string) => void
+  ): Promise<void>;
 }
 const useAppointmentDentist = (): AppointmentDentistContextType => {
   const { ifAuthFn } = useAuth();
+  const finishAppointment = async (
+    appointmentId: number,
+    success: () => void,
+    errors: (err: string) => void
+  ) => {
+    await ifAuthFn(
+      async (token: string) => {
+        const res = await appointmentDentistApi.finishAppointment(token,appointmentId);
+        if (res.code === 200) {
+          success();
+          return;
+        }
+        errors(res.message);
+      },
+      (err) => {
+        errors(err);
+      }
+    );
+  };
+  const updateTreatmentRecord = async (
+    appointmentId: number,
+    data: UpdateTreatmentRecordRequest,
+    success: () => void,
+    errors: (err: string) => void
+  ) => {
+    await ifAuthFn(
+      async (token: string) => {
+        const res = await appointmentDentistApi.updateTreatmentRecord(
+          token,
+          appointmentId,
+          data
+        );
+        if (res.code === 200) {
+          success();
+          return;
+        }
+        errors(res.message);
+      },
+      (err) => {
+        errors(err);
+      }
+    );
+  };
   const removeMedicine = async (
     appointmentId: number,
     medicines: number[],
@@ -229,7 +284,7 @@ const useAppointmentDentist = (): AppointmentDentistContextType => {
   };
   const cancelAppointment = async (
     appointmentId: number,
-    note:string,
+    note: string,
     success: () => void,
     errors: (err: string) => void
   ) => {
@@ -260,7 +315,7 @@ const useAppointmentDentist = (): AppointmentDentistContextType => {
       async (token) => {
         const res = await appointmentDentistApi.getTreatmentRecordServices(
           appointmentId,
-          token,
+          token
         );
         if (res.code === 200) {
           success(res.data ?? []);
@@ -282,7 +337,7 @@ const useAppointmentDentist = (): AppointmentDentistContextType => {
       async (token) => {
         const res = await appointmentDentistApi.getMedicineUsed(
           appointmentId,
-          token,
+          token
         );
         if (res.code === 200) {
           success(res.data ?? []);
@@ -302,10 +357,12 @@ const useAppointmentDentist = (): AppointmentDentistContextType => {
     getAppointmentsToday: getAppointmentsToday,
     removeSerivce: removeSerivce,
     removeMedicine: removeMedicine,
-    getAppointmentDetails:getAppointmentDetails,
+    getAppointmentDetails: getAppointmentDetails,
     cancelAppointment: cancelAppointment,
-    getTreatmentRecordServices:getTreatmentRecordServices,
-    getMedicineUsed:getMedicineUsed
+    getTreatmentRecordServices: getTreatmentRecordServices,
+    getMedicineUsed: getMedicineUsed,
+    updateTreatmentRecord: updateTreatmentRecord,
+    finishAppointment:finishAppointment
   };
 };
 export default useAppointmentDentist;

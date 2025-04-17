@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
@@ -31,6 +31,7 @@ const RegisterScreen = () => {
   const { register: registerUser, isAuthenticated, isLoading } = useAuth();
   const [genderError, setGenderError] = useState<string | null>(null);
   const [genderText, setGenderText] = useState<string>("");
+  const genderRef = useRef<string | null>(null);
   const {
     handleSubmit,
     control,
@@ -40,7 +41,11 @@ const RegisterScreen = () => {
   });
 
   const onSubmit = useCallback(async (data: FormData) => {
-    if (!["male", "female"].includes(genderText.toLowerCase())) {
+    if (!genderRef.current) {
+      setGenderError("Giới tính là cần thiết");
+      return;
+    }
+    if (!["male", "female"].includes(genderRef?.current.toLowerCase())) {
       setGenderError("Giới tính phải là male hoặc female");
       return;
     }
@@ -65,7 +70,7 @@ const RegisterScreen = () => {
         });
       }
     );
-    setGenderText("")
+    setGenderText("");
     setGenderError(null);
   }, []);
 
@@ -158,6 +163,7 @@ const RegisterScreen = () => {
           label="Giới tính (Male/Female)"
           onChangeText={(text) => {
             setGenderText(text);
+            genderRef.current = text;
           }}
           icon="carpenter"
           error={genderError !== null}

@@ -20,28 +20,18 @@ interface ToolModel {
 
 const tools: ToolModel[] = [
   {
-    href: "/root/dentist/appointment/process-status",
+    href: "/root/staff/appointment/create-invoice",
+    icon: "credit-card",
+    label: "Tạo hóa đơn",
+  },
+  {
+    href: "/root/staff/appointment/confirm-invoice",
     icon: "check-circle",
-    label: "Xử lý trạng thái hồ sơ",
-  },
-  {
-    href: "/root/dentist/appointment/process-treatment",
-    icon: "file-text",
-    label: "Xử lý hồ sơ điều trị",
-  },
-  {
-    href: "/root/dentist/appointment/process-service",
-    icon: "file-text",
-    label: "Xử lý dịch vụ hồ sơ",
-  },
-  {
-    href: "/root/dentist/appointment/process-medicine",
-    icon: "file-text",
-    label: "Xử lý thuốc hồ sơ",
+    label: "Xác nhận thanh toán",
   },
 ];
 
-const DashboardDentistScreen = () => {
+const DashboardStaffScreen = () => {
   const { isMobile } = useScreen();
   const router = useRouter();
 
@@ -51,6 +41,7 @@ const DashboardDentistScreen = () => {
       //@ts-ignore
       onPress={() => router.navigate(item.href)}
     >
+      {/* item.icon as any */}
       <Feather name={item.icon as any} size={28} color="#4A90E2" />
       <Text style={styles.label}>{item.label}</Text>
     </TouchableOpacity>
@@ -107,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DashboardDentistScreen;
+export default DashboardStaffScreen;

@@ -199,7 +199,7 @@ const getTreatmentRecordServices = async (
   );
   return respone.data;
 };
-const getMedicineUsed= async (
+const getMedicineUsed = async (
   appointmentId: number,
   token: string
 ): Promise<ApiResponse<Array<MedicineUsed>>> => {
@@ -215,6 +215,46 @@ const getMedicineUsed= async (
   );
   return respone.data;
 };
+export interface UpdateTreatmentRecordRequest {
+  treatment: string;
+  diagnosis: string;
+}
+const updateTreatmentRecord = async (
+  token: string,
+  appointmentId: number,
+  data: UpdateTreatmentRecordRequest
+): Promise<ApiResponse<DataNone>> => {
+  const respone = await axios.put(
+    appointmentDentistApi(`/treatment-record/update/${appointmentId}`),
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return respone.data;
+};
+const finishAppointment = async (
+  token: string,
+  appointmentId: number,
+): Promise<ApiResponse<DataNone>> => {
+  const respone = await axios.post(
+    appointmentDentistApi(`/finish/${appointmentId}`),
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return respone.data;
+};
+
 export default {
   getTreatmentRecordServices,
   getMedicineUsed,
@@ -226,4 +266,6 @@ export default {
   removeSerivce,
   removeMedicine,
   getAppointmentDetails,
+  updateTreatmentRecord,
+  finishAppointment
 };
