@@ -3,7 +3,7 @@ import { GetAppointmentResponse } from "@/src/apis/appointment-user.api";
 import useAppointmentUser from "@/src/hooks/useAppointmentUser.hook";
 import { FlashList } from "@shopify/flash-list";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -30,8 +30,9 @@ const MyAppointmentScreen = () => {
   );
   const [loadErrorMessage, setLoadErrorMessage] = useState<string | null>(null);
   const [pageCurrent, setPageCurrent] = useState<number>(1);
-  const [noteCancel, setNoteCancel] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const noteCancelRef = useRef<string | null>(null);
+  const [today] = useState<Date>(new Date());
 
   const init = async (page: number) => {
     await getAppointments(
@@ -47,7 +48,7 @@ const MyAppointmentScreen = () => {
     );
   };
   const cancelAppointmentHandler = async (id: number) => {
-    if (!noteCancel) {
+    if (!noteCancelRef.current) {
       Toast.show({
         type: "error", // 'success' | 'error' | 'info'
         text1: "Lỗi",
@@ -57,12 +58,12 @@ const MyAppointmentScreen = () => {
     }
     await cancelAppointment(
       id,
-      noteCancel,
+      noteCancelRef.current,
       () => {
         Toast.show({
           type: "success", // 'success' | 'error' | 'info'
           text1: "Thông báo",
-          text2: "Xóa thành công",
+          text2: "Hủy thành công",
         });
         init(pageCurrent);
       },
@@ -74,7 +75,7 @@ const MyAppointmentScreen = () => {
         });
       }
     );
-    setNoteCancel(null);
+    noteCancelRef.current = null;
   };
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -96,15 +97,22 @@ const MyAppointmentScreen = () => {
   }
   const AppointmentCard = ({ item }: { item: GetAppointmentResponse }) => {
     const statusColor = getStatusColor(item.appointmentStatus);
+    const targetDate = new Date(item.date);
+
     return (
       <Pressable
         onPress={() => {
-          router.navigate({
-            pathname: "/root/patient/appointment/details/[details]",
-            params: {
-              details: item.id,
-            },
-          });
+          if (
+            item.appointmentStatus === AppointmentStatus.CONFIRMED ||
+            item.appointmentStatus === AppointmentStatus.FINISHED
+          ) {
+            router.navigate({
+              pathname: "/root/patient/appointment/details/[details]",
+              params: {
+                details: item.id,
+              },
+            });
+          }
         }}
       >
         <View
@@ -120,7 +128,10 @@ const MyAppointmentScreen = () => {
               color={ColorTheme.Primary}
               style={styles.iconHeader}
             />
-            <Text style={styles.title}>Lịch hẹn #{item.id}</Text>
+            <Text style={styles.title}>
+              Lịch hẹn #{item.id}{" "}
+              {targetDate < today ? "(Thời gian đã qua)" : ""}
+            </Text>
           </View>
 
           <View style={styles.bodyCard}>
@@ -162,74 +173,75 @@ const MyAppointmentScreen = () => {
           </View>
 
           <View>
-            {item.appointmentStatus === AppointmentStatus.WAITING && (
-              <View>
-                <BottomSheetCustom
-                  button={(ref) => (
-                    <ButtonCustom
-                      onPress={async () => {
-                        ref.current?.present();
-                      }}
-                      title="Hủy cuộc hẹn"
-                      color={ColorTheme.WhiteE}
-                      textColor={ColorTheme.Black}
-                      fontSize={12}
-                    />
-                  )}
-                  bottomSheetModalStyle={{
-                    margin: 10,
-                  }}
-                  bottomSheetViewStyle={{
-                    paddingHorizontal: 30,
-                    paddingBottom: 30,
-                  }}
-                  child={(ref) => {
-                    return (
-                      <View style={{ padding: 16 }}>
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            textAlign: "center",
-                            marginBottom: 16,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Bạn có chắc xác nhận hủy cuộc hẹn {item.id} không?
-                        </Text>
-                        <View style={{ marginBottom: 10 }}>
-                          <TextInputCustom
-                            label="Lý do"
-                            onChangeText={(text) => {
-                              setNoteCancel(text);
+            {item.appointmentStatus === AppointmentStatus.WAITING &&
+              targetDate > today && (
+                <View>
+                  <BottomSheetCustom
+                    button={(ref) => (
+                      <ButtonCustom
+                        onPress={async () => {
+                          ref.current?.present();
+                        }}
+                        title="Hủy cuộc hẹn"
+                        color={ColorTheme.WhiteE}
+                        textColor={ColorTheme.Black}
+                        fontSize={12}
+                      />
+                    )}
+                    bottomSheetModalStyle={{
+                      margin: 10,
+                    }}
+                    bottomSheetViewStyle={{
+                      paddingHorizontal: 30,
+                      paddingBottom: 30,
+                    }}
+                    child={(ref) => {
+                      return (
+                        <View style={{ padding: 16 }}>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              textAlign: "center",
+                              marginBottom: 16,
+                              fontWeight: "bold",
                             }}
-                            icon="text-fields"
-                          />
+                          >
+                            Bạn có chắc xác nhận hủy cuộc hẹn {item.id} không?
+                          </Text>
+                          <View style={{ marginBottom: 10 }}>
+                            <TextInputCustom
+                              label="Lý do"
+                              onChangeText={(text) => {
+                                noteCancelRef.current = text;
+                              }}
+                              icon="text-fields"
+                            />
+                          </View>
+                          <View style={{}}>
+                            <ButtonCustom
+                              onPress={async () => {
+                                ref.current?.close();
+                              }}
+                              title="Hủy"
+                              color={ColorTheme.Red}
+                              textColor={ColorTheme.White}
+                              fontSize={12}
+                            />
+                            <ButtonCustom
+                              mt={10}
+                              onPress={async () => {
+                                await cancelAppointmentHandler(item.id);
+                              }}
+                              title="Xác nhận"
+                              fontSize={12}
+                            />
+                          </View>
                         </View>
-                        <View style={{}}>
-                          <ButtonCustom
-                            onPress={async () => {
-                              ref.current?.close();
-                            }}
-                            title="Hủy"
-                            color={ColorTheme.Red}
-                            textColor={ColorTheme.White}
-                            fontSize={12}
-                          />
-                          <ButtonCustom
-                            mt={10}
-                            onPress={async () => {
-                              await cancelAppointmentHandler(item.id);
-                            }}
-                            title="Xác nhận"
-                            fontSize={12}
-                          />
-                        </View>
-                      </View>
-                    );
-                  }}
-                />
-              </View>
-            )}
+                      );
+                    }}
+                  />
+                </View>
+              )}
             <View style={styles.statusContainer}>
               <Text style={[styles.status, { color: statusColor.color }]}>
                 {statusText(item.appointmentStatus)}

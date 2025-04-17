@@ -11,9 +11,9 @@ const DentistAppointmentLayout = () => {
       }}
     >
       <Stack.Screen
-        name="confirm"
+        name="process-status"
         options={{
-          title: "✅ Xác nhận hồ sơ",
+          title: "✅ Xử lý trạng thái hồ sơ",
           headerShown: true,
         }}
       />
@@ -28,6 +28,13 @@ const DentistAppointmentLayout = () => {
         name="process-medicine"
         options={{
           title: "♨️ Xử lý thuốc hồ sơ",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="process-treatment"
+        options={{
+          title: "♨️ Xử lý hồ sơ điều trị",
           headerShown: true,
         }}
       />

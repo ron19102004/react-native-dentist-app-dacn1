@@ -14,7 +14,7 @@ import { Role, SystemInfoData } from "@/src/apis/model.d";
 import ColorTheme from "@/common/color.constant";
 import ButtonCustom from "@/components/button";
 import { useRouter } from "expo-router";
-import useAdmin from "@/src/hooks/admin.hook";
+import useAdmin from "@/src/hooks/useAdmin.hook";
 import { useAuth } from "@/src/contexts";
 
 const InfoItem = ({ icon, label, value, onPress }: any) => (

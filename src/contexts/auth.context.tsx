@@ -33,7 +33,8 @@ export const AuthContext = createContext<UseAuth>({
   },
   ifAuthFn: function <T>(
     fn: (token: string) => Promise<T>,
-    errors?: (error: string) => void
+    errors?: (error: string) => void,
+    retries?:number
   ): Promise<T | null> {
     throw new Error("Function not implemented.");
   },
@@ -56,7 +57,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         router.replace("/login");
       } else {
         router.navigate("/root")
-        // router.replace("/root/dentist/appointment/process-medicine");
+        // router.replace("/root/staff/appointment/confirm-invoice");
       }
     }
     // router.replace(`/browser/${encodeURIComponent('https://github.com/ron19102004/react-native-dentist-app-dacn1')}`);

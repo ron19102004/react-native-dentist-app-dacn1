@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SystemInfoData } from "@/src/apis/model.d";
 import TextInputCustom from "@/components/input";
 import ButtonCustom from "@/components/button";
-import useAdmin from "@/src/hooks/admin.hook";
+import useAdmin from "@/src/hooks/useAdmin.hook";
 import ColorTheme from "@/common/color.constant";
 import Toast from "react-native-toast-message";
 import { useRouter } from "expo-router";

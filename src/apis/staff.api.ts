@@ -26,7 +26,7 @@ const confirmInvoiceAppointment = async (
   paymentMethod: PaymentMethod
 ): Promise<ApiResponse<DataNone>> => {
   const response = await axios.post(
-    staffApi(`/invoices/new/${appointmentId}?paymentMethod=${paymentMethod}`),
+    staffApi(`/invoices/confirm/${appointmentId}/${paymentMethod}`),
     {},
     {
       headers: {

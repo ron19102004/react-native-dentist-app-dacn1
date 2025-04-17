@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Dentist TDL",
+    "name": "E-DentCare+",
     "slug": "dentist-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/toothLogo.png",
+    "icon": "./assets/images/tooth.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -25,14 +25,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/toothLogo.png"
+      "favicon": "./assets/images/tooth.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/toothLogo.png",
+          "image": "./assets/images/tooth.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

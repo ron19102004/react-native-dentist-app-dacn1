@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ColorTheme from "@/common/color.constant";
 import ButtonCustom from "@/components/button";
 import StatusBarCustom from "@/components/status-bar";
-import useAdmin from "@/src/hooks/admin.hook";
+import useAdmin from "@/src/hooks/useAdmin.hook";
 import Toast from "react-native-toast-message";
 const schema = yup.object().shape({
   email: yup.string().email("Email không hợp lệ").required("Email là bắt buộc"),

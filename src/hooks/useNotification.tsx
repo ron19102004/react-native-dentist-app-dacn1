@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../contexts/auth.context";
 import * as Notifications from "expo-notifications";
-import { API_HOST_NAME } from "../constants/api.constant";
+import { API_HOST_NAME, WS_POINT } from "../constants/api.constant";
 import Toast from "react-native-toast-message";
 import activityLogApi from "../apis/activity-log.api";
 
@@ -60,7 +60,7 @@ const useNotification = (): NotificationContextType => {
   const connectSocket = async () => {
     if (!isLoading && isAuthenticated && token && token.length > 0) {
       socket.current = new WebSocket(
-        `ws://${API_HOST_NAME}/notification?token=${token}&userAgent=mobile`
+        `${WS_POINT}/notification?token=${token}&userAgent=mobile`
       );
       socket.current.onopen = () => {
         console.log("🔵 Notification Connected");

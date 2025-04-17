@@ -245,6 +245,13 @@ export enum PaymentMethod {
   TRANSFER = "TRANSFER",
   INSTALLMENT = "INSTALLMENT",
 }
+export function toPaymentMethodViVN(p:PaymentMethod){
+  switch(p){
+    case PaymentMethod.CASH: return "Tiền mặt"
+    case PaymentMethod.TRANSFER: return "Chuyển khoản"
+    case PaymentMethod.INSTALLMENT: return "Trả góp"
+  }
+}
 
 export interface Invoice {
   createdAt: string;

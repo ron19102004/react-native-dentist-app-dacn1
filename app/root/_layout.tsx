@@ -18,6 +18,7 @@ const RootLayout = () => {
         <Stack.Screen name="patient" />
         <Stack.Screen name="admin" />
         <Stack.Screen name="dentist" />
+        <Stack.Screen name="staff" />
       </Stack>
     </ScreenProvider>
   );
