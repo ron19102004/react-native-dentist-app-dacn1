@@ -1,41 +1,23 @@
+// config.ts
+export const API_HOST_NAME = "toilaron.icu"; 
+// export const API_HOST_NAME = "103.172.79.67"; 
+export const IS_SECURE = true;
 
-// export const API_HOST_NAME = "192.168.1.14:8080"
-export const API_HOST_NAME = "103.172.79.67";
-// export const API_HOST_NAME = "toilaron.icu";
-export const WS_POINT = "ws://" + API_HOST_NAME
-const API_URL_ORIGIN: string = "http://" + API_HOST_NAME;
+const PROTOCOL = IS_SECURE ? "https://" : "http://";
+export const WS_POINT = (IS_SECURE ? "wss://" : "ws://") + API_HOST_NAME;
+export const API_URL_ORIGIN: string = PROTOCOL + API_HOST_NAME;
 
-export const authApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/auth${url}`;
-};
 
-export const adminApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/admin${url}`;
-};
-export const medicineApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/medicines${url}`;
-};
-export const dentalServiceApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/dental-services${url}`;
-};
-export const appointmentUserApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/user/appointments${url}`;
-};
-export const staffApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/staffs${url}`;
-};
-export const medicineCategoryApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/medicine-categories${url}`;
-};
-export const expertiseApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/expertise${url}`;
-};
-export const appointmentDentistApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/dentist/appointments${url}`;
-};
-export const dentistApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/dentists${url}`;
-};
-export const activityLogApi = (url: string) => {
-  return `${API_URL_ORIGIN}/api/activity-logs${url}`;
-};
+const withPrefix = (prefix: string) => (url: string) => `${API_URL_ORIGIN}${prefix}${url}`;
+
+export const authApi = withPrefix("/api/auth");
+export const adminApi = withPrefix("/api/admin");
+export const medicineApi = withPrefix("/api/medicines");
+export const dentalServiceApi = withPrefix("/api/dental-services");
+export const appointmentUserApi = withPrefix("/api/user/appointments");
+export const staffApi = withPrefix("/api/staffs");
+export const medicineCategoryApi = withPrefix("/api/medicine-categories");
+export const expertiseApi = withPrefix("/api/expertise");
+export const appointmentDentistApi = withPrefix("/api/dentist/appointments");
+export const dentistApi = withPrefix("/api/dentists");
+export const activityLogApi = withPrefix("/api/activity-logs");
