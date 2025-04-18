@@ -49,10 +49,11 @@ const RegisterScreen = () => {
       setGenderError("Giới tính phải là male hoặc female");
       return;
     }
+    
     await registerUser(
       {
         ...data,
-        gender: textToGender(genderText),
+        gender: textToGender(genderRef.current),
       },
       () => {
         Toast.show({

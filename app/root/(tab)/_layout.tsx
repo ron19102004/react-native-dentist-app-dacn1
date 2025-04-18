@@ -44,7 +44,7 @@ const TabLayout = () => {
   }, [navigation]);
   return (
     <Tabs
-      screenOptions={{ ...screenOptionsCustom, tabBarHideOnKeyboard: true }}
+      screenOptions={{ ...screenOptionsCustom }}
       tabBar={(props) => (
         <View
           style={{

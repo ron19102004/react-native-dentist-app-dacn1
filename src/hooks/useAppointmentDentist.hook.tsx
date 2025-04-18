@@ -4,7 +4,7 @@ import appointmentDentistApi, {
   AppointmentDentistResponse,
   UpdateTreatmentRecordRequest,
 } from "../apis/appointment-dentist.api";
-import { MedicineUsed, TreatmentRecordService } from "../apis/model";
+import { MedicineUsed, TreatmentRecordService } from "../apis/model.d";
 import { useAuth } from "../contexts";
 
 interface AppointmentDentistContextType {

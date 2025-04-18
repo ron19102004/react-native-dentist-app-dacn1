@@ -4,7 +4,12 @@ import { useScreen } from "@/src/contexts";
 import { useRouter } from "expo-router";
 import React, { FC, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Feather, MaterialIcons, Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import {
+  Feather,
+  MaterialIcons,
+  Ionicons,
+  FontAwesome5,
+} from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
 
 interface Category {
@@ -22,12 +27,16 @@ const categories: Category[] = [
   {
     href: "",
     label: "Ưu đãi",
-    icon: <MaterialIcons name="local-offer" size={26} color={ColorTheme.Primary} />,
+    icon: (
+      <MaterialIcons name="local-offer" size={26} color={ColorTheme.Primary} />
+    ),
   },
   {
     href: "/root/patient/appointment/booking",
     label: "Đăt lịch hẹn",
-    icon: <Ionicons name="calendar-outline" size={26} color={ColorTheme.Primary} />,
+    icon: (
+      <Ionicons name="calendar-outline" size={26} color={ColorTheme.Primary} />
+    ),
   },
   {
     href: "",
@@ -37,12 +46,20 @@ const categories: Category[] = [
   {
     href: "/root/my-appointment",
     label: "Hồ sơ",
-    icon: <Ionicons name="document-text-outline" size={26} color={ColorTheme.Primary} />,
+    icon: (
+      <Ionicons
+        name="document-text-outline"
+        size={26}
+        color={ColorTheme.Primary}
+      />
+    ),
   },
   {
     href: "/root/patient/home/expertise/all",
     label: "Chuyên môn",
-    icon: <FontAwesome5 name="stethoscope" size={24} color={ColorTheme.Primary} />,
+    icon: (
+      <FontAwesome5 name="stethoscope" size={24} color={ColorTheme.Primary} />
+    ),
   },
 ];
 
@@ -53,16 +70,21 @@ const CategoryHome = () => {
     <View style={styles.container}>
       <FlashList
         data={categories}
-        renderItem={({ item }) => <CategoryItem item={item} isMobile={isMobile} />}
+        renderItem={({ item }) => (
+          <CategoryItem item={item} isMobile={isMobile} />
+        )}
         numColumns={isMobile ? 3 : 4}
         estimatedItemSize={100}
-        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
       />
     </View>
   );
 };
 
-const CategoryItem: FC<{ item: Category; isMobile: boolean }> = ({ item, isMobile }) => {
+const CategoryItem: FC<{ item: Category; isMobile: boolean }> = ({
+  item,
+  isMobile,
+}) => {
   const [isPressed, setIsPressed] = useState(false);
   const router = useRouter();
 
@@ -81,7 +103,9 @@ const CategoryItem: FC<{ item: Category; isMobile: boolean }> = ({ item, isMobil
       ]}
     >
       <View style={styles.icon}>{item.icon}</View>
-      <Text style={[styles.label, { color: isPressed ? ColorTheme.White : "#333" }]}>
+      <Text
+        style={[styles.label, { color: isPressed ? ColorTheme.White : "#333" }]}
+      >
         {item.label}
       </Text>
     </Pressable>
@@ -95,12 +119,14 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
+    flexDirection: "column",
+    minHeight: 100,
     alignItems: "center",
     justifyContent: "center",
     padding: 14,
     borderRadius: 12,
     margin: 6,
-    ...BoxShadow({ color: ColorTheme.BlackB }),
+    ...BoxShadow({ color: ColorTheme.BlackC }),
   },
   icon: {
     marginBottom: 8,

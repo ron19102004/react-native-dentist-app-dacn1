@@ -24,6 +24,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
 import { Role } from "@/src/apis/model.d";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProfileScreen = () => {
   const { isMobile } = useScreen();
@@ -32,86 +33,114 @@ const ProfileScreen = () => {
   return (
     <Fragment>
       <StatusBarCustom bg={ColorTheme.Primary} style="light-content" />
-      <View
-        style={{
-          backgroundColor: ColorTheme.WhiteE,
-          flex: 1,
-          position: "relative",
-        }}
-      >
         <View
           style={{
-            position: "absolute",
-            width: "100%",
-            bottom: 0,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: ColorTheme.WhiteE,
+            flex: 1,
+            position: "relative",
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 10,
+              position: "absolute",
+              width: "100%",
+              bottom: 0,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            Dentist App - Lastest 2025/03/02
-          </Text>
-        </View>
-        {/* Thông tin tài khoản */}
-        <ProfileTile
-          onPress={(user) => {
-            router.navigate("/root/profile/details-profile");
-          }}
-        />
-        <ScrollView>
-          {/* Thông tin hồ sơ */}
-          <ListTile
-            onPress={async () => {
+            <Text
+              style={{
+                fontSize: 10,
+              }}
+            >
+              Dentist App - Lastest 2025/03/02
+            </Text>
+          </View>
+          {/* Thông tin tài khoản */}
+          <ProfileTile
+            onPress={(user) => {
               router.navigate("/root/profile/details-profile");
             }}
-            mx={isMobile ? 15 : 30}
-            center={(color) => (
-              <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                Thông tin hồ sơ
-              </Text>
-            )}
-            leading={(color) => (
-              <Feather
-                name="file"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-            suffix={(color) => (
-              <MaterialIcons
-                name="arrow-right"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
           />
-          {/* Đổi mật khẩu */}
-          <BottomSheetCustom
-            bottomSheetModalStyle={{
-              marginHorizontal: isMobile ? 10 : 50,
-            }}
-            bottomSheetViewStyle={{
-              paddingVertical: 10,
-              paddingHorizontal: 10,
-              paddingBottom: 30,
-            }}
-            button={(ref) => (
+          <ScrollView>
+            {/* Thông tin hồ sơ */}
+            <ListTile
+              onPress={async () => {
+                router.navigate("/root/profile/details-profile");
+              }}
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Thông tin hồ sơ
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="file"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+            />
+            {/* Đổi mật khẩu */}
+            <BottomSheetCustom
+              bottomSheetModalStyle={{
+                marginHorizontal: isMobile ? 10 : 50,
+              }}
+              bottomSheetViewStyle={{
+                paddingVertical: 10,
+                paddingHorizontal: 10,
+                paddingBottom: 30,
+              }}
+              button={(ref) => (
+                <ListTile
+                  mx={isMobile ? 15 : 30}
+                  onPress={async () => {
+                    ref.current?.present();
+                  }}
+                  center={(color) => (
+                    <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                      Đổi mật khẩu
+                    </Text>
+                  )}
+                  leading={(color) => (
+                    <Feather
+                      name="lock"
+                      style={{ ...styles.TileIcon, color: color }}
+                    />
+                  )}
+                  suffix={(color) => (
+                    <MaterialIcons
+                      name="arrow-right"
+                      style={{ ...styles.TileIcon, color: color }}
+                    />
+                  )}
+                />
+              )}
+              child={() => <ChangePassword />}
+            />
+            {/* Chuyển sang giao diện admin  */}
+            {userCurrent && userCurrent.role === Role.ADMIN && (
               <ListTile
-                mx={isMobile ? 15 : 30}
                 onPress={async () => {
-                  ref.current?.present();
+                  router.navigate("/root/admin/dashboard");
                 }}
+                mx={isMobile ? 15 : 30}
                 center={(color) => (
                   <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                    Đổi mật khẩu
+                    Bộ điều khiển - ADMIN
                   </Text>
                 )}
                 leading={(color) => (
                   <Feather
-                    name="lock"
+                    name="package"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
@@ -123,138 +152,21 @@ const ProfileScreen = () => {
                 )}
               />
             )}
-            child={() => <ChangePassword />}
-          />
-          {/* Chuyển sang giao diện admin  */}
-          {userCurrent && userCurrent.role === Role.ADMIN && (
-            <ListTile
-              onPress={async () => {
-                router.navigate("/root/admin/dashboard");
-              }}
-              mx={isMobile ? 15 : 30}
-              center={(color) => (
-                <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                  Bộ điều khiển - ADMIN
-                </Text>
-              )}
-              leading={(color) => (
-                <Feather
-                  name="package"
-                  style={{ ...styles.TileIcon, color: color }}
-                />
-              )}
-              suffix={(color) => (
-                <MaterialIcons
-                  name="arrow-right"
-                  style={{ ...styles.TileIcon, color: color }}
-                />
-              )}
-            />
-          )}
-          {/* Chuyển sang giao diện admin  */}
-          {userCurrent && userCurrent.role === Role.DENTIST && (
-            <ListTile
-              onPress={async () => {
-                router.navigate("/root/dentist/dashboard");
-              }}
-              mx={isMobile ? 15 : 30}
-              center={(color) => (
-                <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                  Bộ điều khiển - DENTIST
-                </Text>
-              )}
-              leading={(color) => (
-                <Feather
-                  name="package"
-                  style={{ ...styles.TileIcon, color: color }}
-                />
-              )}
-              suffix={(color) => (
-                <MaterialIcons
-                  name="arrow-right"
-                  style={{ ...styles.TileIcon, color: color }}
-                />
-              )}
-            />
-          )}
-          {/* Chuyển sang giao diện staff  */}
-          {userCurrent && userCurrent.role === Role.STAFF && (
-            <ListTile
-              onPress={async () => {
-                router.navigate("/root/staff/dashboard");
-              }}
-              mx={isMobile ? 15 : 30}
-              center={(color) => (
-                <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                  Bộ điều khiển - STAFF
-                </Text>
-              )}
-              leading={(color) => (
-                <Feather
-                  name="package"
-                  style={{ ...styles.TileIcon, color: color }}
-                />
-              )}
-              suffix={(color) => (
-                <MaterialIcons
-                  name="arrow-right"
-                  style={{ ...styles.TileIcon, color: color }}
-                />
-              )}
-            />
-          )}
-          {/* Sao chép mã giới thiệu */}
-          <ListTile
-            onPress={async () => {
-              await Clipboard.setStringAsync("0392477615  ");
-              ToastAndroid.show(
-                "Đã sao chép mã giới thiệu!",
-                ToastAndroid.CENTER
-              );
-            }}
-            mx={isMobile ? 15 : 30}
-            center={(color) => (
-              <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                Sao chép mã giới thiệu
-              </Text>
-            )}
-            leading={(color) => (
-              <Feather
-                name="codepen"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-            suffix={(color) => (
-              <MaterialIcons
-                name="arrow-right"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-          />
-          {/* Nhập mã giới thiệu */}
-          <BottomSheetCustom
-            bottomSheetModalStyle={{
-              marginHorizontal: isMobile ? 10 : 50,
-            }}
-            bottomSheetViewStyle={{
-              paddingVertical: 10,
-              paddingHorizontal: 10,
-              paddingBottom: 30,
-            }}
-            button={(ref) => (
+            {/* Chuyển sang giao diện admin  */}
+            {userCurrent && userCurrent.role === Role.DENTIST && (
               <ListTile
-                mx={isMobile ? 15 : 30}
                 onPress={async () => {
-                  ref.current?.present();
+                  router.navigate("/root/dentist/dashboard");
                 }}
+                mx={isMobile ? 15 : 30}
                 center={(color) => (
                   <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                    Nhập mã giới thiệu
+                    Bộ điều khiển - DENTIST
                   </Text>
                 )}
                 leading={(color) => (
-                  <MaterialIcons
-                    name="confirmation-number"
+                  <Feather
+                    name="package"
                     style={{ ...styles.TileIcon, color: color }}
                   />
                 )}
@@ -266,82 +178,171 @@ const ProfileScreen = () => {
                 )}
               />
             )}
-            child={() => <EnterReferralCode />}
-          />
-          {/* Trình duyệt */}
-          <ListTile
-            mx={isMobile ? 15 : 30}
-            center={(color) => (
-              <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                Trình duyệt
-              </Text>
-            )}
-            leading={(color) => (
-              <Feather
-                name="globe"
-                style={{ ...styles.TileIcon, color: color }}
+            {/* Chuyển sang giao diện staff  */}
+            {userCurrent && userCurrent.role === Role.STAFF && (
+              <ListTile
+                onPress={async () => {
+                  router.navigate("/root/staff/dashboard");
+                }}
+                mx={isMobile ? 15 : 30}
+                center={(color) => (
+                  <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                    Bộ điều khiển - STAFF
+                  </Text>
+                )}
+                leading={(color) => (
+                  <Feather
+                    name="package"
+                    style={{ ...styles.TileIcon, color: color }}
+                  />
+                )}
+                suffix={(color) => (
+                  <MaterialIcons
+                    name="arrow-right"
+                    style={{ ...styles.TileIcon, color: color }}
+                  />
+                )}
               />
             )}
-            suffix={(color) => (
-              <MaterialIcons
-                name="arrow-right"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-            onPress={async () => {
-              router.navigate(
-                `/browser/${encodeURIComponent("https://www.google.com/")}`
-              );
-            }}
-          />
-          {/* Thông tin hệ thống */}
-          <ListTile
-            mx={isMobile ? 15 : 30}
-            center={(color) => (
-              <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                Thông tin hệ thống
-              </Text>
-            )}
-            leading={(color) => (
-              <Feather
-                name="info"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-            suffix={(color) => (
-              <MaterialIcons
-                name="arrow-right"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-            onPress={async () => {
-              router.navigate("/root/profile/system-info");
-            }}
-          />
-          {/* Đăng xuất */}
-          <ListTile
-            mx={isMobile ? 15 : 30}
-            center={(color) => (
-              <Text style={{ ...styles.TileCenterStyle, color: color }}>
-                Đăng xuất
-              </Text>
-            )}
-            leading={(color) => (
-              <Feather
-                name="log-out"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-            suffix={(color) => (
-              <MaterialIcons
-                name="arrow-right"
-                style={{ ...styles.TileIcon, color: color }}
-              />
-            )}
-            onPress={logout}
-          />
-        </ScrollView>
-      </View>
+            {/* Sao chép mã giới thiệu */}
+            <ListTile
+              onPress={async () => {
+                await Clipboard.setStringAsync("0392477615  ");
+                ToastAndroid.show(
+                  "Đã sao chép mã giới thiệu!",
+                  ToastAndroid.CENTER
+                );
+              }}
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Sao chép mã giới thiệu
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="codepen"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+            />
+            {/* Nhập mã giới thiệu */}
+            <BottomSheetCustom
+              bottomSheetModalStyle={{
+                marginHorizontal: isMobile ? 10 : 50,
+              }}
+              bottomSheetViewStyle={{
+                paddingVertical: 10,
+                paddingHorizontal: 10,
+                paddingBottom: 30,
+              }}
+              button={(ref) => (
+                <ListTile
+                  mx={isMobile ? 15 : 30}
+                  onPress={async () => {
+                    ref.current?.present();
+                  }}
+                  center={(color) => (
+                    <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                      Nhập mã giới thiệu
+                    </Text>
+                  )}
+                  leading={(color) => (
+                    <MaterialIcons
+                      name="confirmation-number"
+                      style={{ ...styles.TileIcon, color: color }}
+                    />
+                  )}
+                  suffix={(color) => (
+                    <MaterialIcons
+                      name="arrow-right"
+                      style={{ ...styles.TileIcon, color: color }}
+                    />
+                  )}
+                />
+              )}
+              child={() => <EnterReferralCode />}
+            />
+            {/* Trình duyệt */}
+            <ListTile
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Trình duyệt
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="globe"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              onPress={async () => {
+                router.navigate(
+                  `/browser/${encodeURIComponent("https://www.google.com/")}`
+                );
+              }}
+            />
+            {/* Thông tin hệ thống */}
+            <ListTile
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Thông tin hệ thống
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="info"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              onPress={async () => {
+                router.navigate("/root/profile/system-info");
+              }}
+            />
+            {/* Đăng xuất */}
+            <ListTile
+              mx={isMobile ? 15 : 30}
+              center={(color) => (
+                <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                  Đăng xuất
+                </Text>
+              )}
+              leading={(color) => (
+                <Feather
+                  name="log-out"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              suffix={(color) => (
+                <MaterialIcons
+                  name="arrow-right"
+                  style={{ ...styles.TileIcon, color: color }}
+                />
+              )}
+              onPress={logout}
+            />
+          </ScrollView>
+        </View>
     </Fragment>
   );
 };

@@ -272,7 +272,7 @@ export interface TreatmentRecord {
   medicineUseds?: MedicineUsed[];
 }
 
-export const textToGender = (value: string): Gender => {
-  if (value.toUpperCase() === "MALE") return Gender.MALE;
+export const textToGender = (value: string): Gender => {  
+  if (value.toUpperCase().trim() === "MALE") return Gender.MALE;
   return Gender.FEMALE;
 };

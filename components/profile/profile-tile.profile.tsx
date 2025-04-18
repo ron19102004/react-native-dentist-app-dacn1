@@ -12,7 +12,7 @@ interface ProfileTileProps {
 }
 const ProfileTile: FC<ProfileTileProps> = ({ onPress = () => {} }) => {
   const { userCurrent } = useAuth();
-  const [mtTile] = useState<number>(25);
+  const [mtTile] = useState<number>(30);
   const { isMobile } = useScreen();
   return (
     <Pressable
@@ -25,7 +25,7 @@ const ProfileTile: FC<ProfileTileProps> = ({ onPress = () => {} }) => {
       <View
         style={{
           backgroundColor: ColorTheme.Primary,
-          height: 100,
+          height: 130,
           flexDirection: "column",
           justifyContent: "flex-end",
           alignItems: "center",
@@ -42,7 +42,7 @@ const ProfileTile: FC<ProfileTileProps> = ({ onPress = () => {} }) => {
             position: "absolute",
             flexDirection: "row",
             alignItems: "center",
-            paddingVertical: 20,
+            paddingVertical: 30,
             paddingHorizontal: 12,
             backgroundColor: ColorTheme.White,
             bottom: -mtTile,

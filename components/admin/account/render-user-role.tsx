@@ -9,7 +9,7 @@ const RenderUser: FC<{
   user: AccountInfoRole | null;
   requireRole: Role | null;
 }> = ({ user, requireRole }) => {
-  if(requireRole){
+  if (requireRole) {
     if (requireRole === Role.DENTIST) {
       if (user?.role === Role.STAFF) {
         return (
@@ -45,36 +45,82 @@ const RenderUser: FC<{
         label="Tên đăng nhập"
         value={user?.username || "Không có"}
       />
-      <InfoRow
-        icon={
-          <FontAwesome5
-            name="briefcase-medical"
-            size={18}
-            color={ColorTheme.Primary}
+      {requireRole === Role.DENTIST && (
+        <>
+          <InfoRow
+            icon={
+              <FontAwesome5
+                name="briefcase-medical"
+                size={18}
+                color={ColorTheme.Primary}
+              />
+            }
+            label="Trạng thái làm việc"
+            value={user?.dentist?.workStatus || "Chưa có"}
           />
-        }
-        label="Trạng thái làm việc"
-        value={user?.dentist?.workStatus || "Chưa có"}
-      />
-      <InfoRow
-        icon={
-          <Feather
-            name="activity"
-            size={18}
-            color={user?.dentist?.active ? "green" : "red"}
+          <InfoRow
+            icon={
+              <Feather
+                name="activity"
+                size={18}
+                color={user?.dentist?.active ? "green" : "red"}
+              />
+            }
+            label="Trạng thái hoạt động"
+            value={user?.dentist?.active ? "Đang hoạt động" : "Không hoạt động"}
+            valueColor={user?.dentist?.active ? "green" : "red"}
           />
-        }
-        label="Trạng thái hoạt động"
-        value={user?.dentist?.active ? "Đang hoạt động" : "Không hoạt động"}
-        valueColor={user?.dentist?.active ? "green" : "red"}
-      />
-      <InfoRow
-        icon={
-          <MaterialIcons name="update" size={18} color={ColorTheme.Primary} />
-        }
-        label="Cập nhật lần cuối"
-        value={user?.dentist?.updatedAt || "Không rõ"}
-      />
+          <InfoRow
+            icon={
+              <MaterialIcons
+                name="update"
+                size={18}
+                color={ColorTheme.Primary}
+              />
+            }
+            label="Cập nhật lần cuối"
+            value={user?.dentist?.updatedAt || "Không rõ"}
+          />
+        </>
+      )}
+      {requireRole === Role.STAFF && (
+        <>
+          <InfoRow
+            icon={
+              <FontAwesome5
+                name="briefcase-medical"
+                size={18}
+                color={ColorTheme.Primary}
+              />
+            }
+            label="Trạng thái làm việc"
+            value={user?.staff?.workStatus || "Chưa có"}
+          />
+          <InfoRow
+            icon={
+              <Feather
+                name="activity"
+                size={18}
+                color={user?.staff?.active ? "green" : "red"}
+              />
+            }
+            label="Trạng thái hoạt động"
+            value={user?.staff?.active ? "Đang hoạt động" : "Không hoạt động"}
+            valueColor={user?.staff?.active ? "green" : "red"}
+          />
+          <InfoRow
+            icon={
+              <MaterialIcons
+                name="update"
+                size={18}
+                color={ColorTheme.Primary}
+              />
+            }
+            label="Cập nhật lần cuối"
+            value={user?.staff?.updatedAt || "Không rõ"}
+          />
+        </>
+      )}
     </View>
   );
 };

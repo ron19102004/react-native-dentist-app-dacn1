@@ -1,7 +1,7 @@
 // config.ts
-export const API_HOST_NAME = "toilaron.icu"; 
+export const API_HOST_NAME = "192.168.213.179:8080"; 
 // export const API_HOST_NAME = "103.172.79.67"; 
-export const IS_SECURE = true;
+export const IS_SECURE = false;
 
 const PROTOCOL = IS_SECURE ? "https://" : "http://";
 export const WS_POINT = (IS_SECURE ? "wss://" : "ws://") + API_HOST_NAME;
