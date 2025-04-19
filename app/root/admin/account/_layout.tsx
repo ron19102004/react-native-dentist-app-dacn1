@@ -23,7 +23,7 @@ const AdminAccountLayout = () => {
         }}
       />
       <Stack.Screen
-        name="edit-admin"
+        name="edit-dentist"
         options={{
           title: "Chỉnh thông tin bác sĩ",
           headerShown: true,

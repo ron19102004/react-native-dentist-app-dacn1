@@ -25,7 +25,7 @@ interface AdminContextType {
     success: () => void,
     errors: (err: string) => void
   ): Promise<void>;
-  updateAccAdmin(
+  updateAccDentist(
     gmail: string,
     data: UpdateDentistInfoRequest,
     success: () => void,
@@ -109,7 +109,7 @@ const useAdmin = (): AdminContextType => {
       }
     );
   };
-  const updateAccAdmin = async (
+  const updateAccDentist = async (
     gmail: string,
     data: UpdateDentistInfoRequest,
     success: () => void,
@@ -192,7 +192,7 @@ const useAdmin = (): AdminContextType => {
     lockAccount: lockAccount,
     unlockAccount: unlockAccount,
     updateAccStaff: updateAccStaff,
-    updateAccAdmin: updateAccAdmin,
+    updateAccDentist: updateAccDentist,
     getInfoUserHasRole: getInfoUserHasRole,
     updateRole: updateRole,
   };

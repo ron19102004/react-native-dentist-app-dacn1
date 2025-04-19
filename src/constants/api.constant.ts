@@ -1,5 +1,5 @@
 // config.ts
-export const API_HOST_NAME = "192.168.213.179:8080"; 
+export const API_HOST_NAME = "192.168.1.12:8080"; 
 // export const API_HOST_NAME = "103.172.79.67"; 
 export const IS_SECURE = false;
 

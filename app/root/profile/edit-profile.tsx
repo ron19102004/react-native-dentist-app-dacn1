@@ -115,7 +115,7 @@ const EditDetailsProfile = () => {
               control={control}
               render={({ field: { onChange } }) => (
                 <TextInputCustom
-                  label="Email"
+                  label="Email (Thay đổi, tài khoản liên kết google bị xóa)"
                   value={getValues("email")}
                   keyboardTypeOptions="email-address"
                   onChangeText={onChange}

@@ -35,10 +35,10 @@ interface FormData {
   expertiseId: number;
 }
 
-const EditAdminAccount = () => {
+const EditDentistAccount = () => {
   const { getAllExpertise } = useExpertise();
   const [expertises, setExpertises] = useState<Expertise[]>([]);
-  const { updateAccAdmin, getInfoUserHasRole } = useAdmin();
+  const { updateAccDentist, getInfoUserHasRole } = useAdmin();
   const router = useRouter();
   const [accountDetails, setAccountDetails] = useState<AccountInfoRole | null>(
     null
@@ -94,7 +94,7 @@ const EditAdminAccount = () => {
       });
       return;
     }
-    await updateAccAdmin(
+    await updateAccDentist(
       data.email,
       {
         workStatus: data.workStatus as WorkStatus,
@@ -250,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditAdminAccount;
+export default EditDentistAccount;

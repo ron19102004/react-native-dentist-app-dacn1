@@ -13,7 +13,7 @@ interface ProfileTileProps {
 const ProfileTile: FC<ProfileTileProps> = ({ onPress = () => {} }) => {
   const { userCurrent } = useAuth();
   const [mtTile] = useState<number>(30);
-  const { isMobile } = useScreen();
+  const { isMobile } = useScreen();  
   return (
     <Pressable
       onPress={() => {
@@ -51,6 +51,7 @@ const ProfileTile: FC<ProfileTileProps> = ({ onPress = () => {} }) => {
         >
           <Image
             source={Images.MaxR}
+            src={userCurrent?.avatarUrl}
             style={{
               width: 60,
               height: 60,

@@ -7,11 +7,12 @@ import ColorTheme from "@/common/color.constant";
 import TextInputCustom from "@/components/input";
 import ButtonCustom from "@/components/button";
 import { Link, useRouter } from "expo-router";
-import { UserRegisterRequest } from "@/src/apis/auth.api";
+import { SocialAuthType, UserRegisterRequest } from "@/src/apis/auth.api";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
 import { Gender, textToGender } from "@/src/apis/model.d";
 import Toast from "react-native-toast-message";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ và tên là bắt buộc"),
@@ -28,7 +29,12 @@ type FormData = Omit<UserRegisterRequest, "gender">;
 const RegisterScreen = () => {
   const router = useRouter();
   const { width, isTablet } = useScreen();
-  const { register: registerUser, isAuthenticated, isLoading } = useAuth();
+  const {
+    register: registerUser,
+    isAuthenticated,
+    isLoading,
+    oauth2Callback,
+  } = useAuth();
   const [genderError, setGenderError] = useState<string | null>(null);
   const [genderText, setGenderText] = useState<string>("");
   const genderRef = useRef<string | null>(null);
@@ -49,7 +55,7 @@ const RegisterScreen = () => {
       setGenderError("Giới tính phải là male hoặc female");
       return;
     }
-    
+
     await registerUser(
       {
         ...data,
@@ -80,7 +86,36 @@ const RegisterScreen = () => {
       router.replace("/root");
     }
   }, [isAuthenticated, isLoading]);
-
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices(); // Kiểm tra xem Google Play
+      const info = await GoogleSignin.signIn();
+      await oauth2Callback(
+        info.data?.idToken || "",
+        SocialAuthType.GOOGLE,
+        () => {
+          Toast.show({
+            type: "success", // 'success' | 'error' | 'info'
+            text1: "Thông báo",
+            text2: "Đăng nhập thành công",
+          });
+        },
+        (err) => {
+          Toast.show({
+            type: "error", // 'success' | 'error' | 'info'
+            text1: "Lỗi",
+            text2: err,
+          });
+        }
+      );
+    } catch (err) {
+      Toast.show({
+        type: "error", // 'success' | 'error' | 'info'
+        text1: "Lỗi",
+        text2: "Lỗi xác thực bằng google",
+      });
+    }
+  };
   return (
     <ScrollView style={styles.container}>
       <StatusBarCustom bg={ColorTheme.White} style="dark-content" />
@@ -174,6 +209,14 @@ const RegisterScreen = () => {
           title="Đăng ký"
           onPress={handleSubmit(onSubmit)}
           mt={20}
+        />
+        <ButtonCustom
+          mt={20}
+          color={ColorTheme.Red}
+          title="Đăng ký với Google"
+          onPress={async () => {
+            await signIn();
+          }}
         />
         <View
           style={{

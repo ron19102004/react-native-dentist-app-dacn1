@@ -3,11 +3,9 @@ import ButtonCustom from "@/components/button";
 import TextInputCustom from "@/components/input";
 import React, { useCallback, useContext, useEffect } from "react";
 import {
-  ActivityIndicator,
+  BackHandler,
   Image,
-  Keyboard,
-  ScrollView,
-  StatusBar,
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -19,8 +17,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
-import { UserLoginRequest } from "@/src/apis/auth.api";
+import { SocialAuthType, UserLoginRequest } from "@/src/apis/auth.api";
 import Toast from "react-native-toast-message";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import ReactNativeBiometrics from "react-native-biometrics";
 
 const schema = yup.object().shape({
   username: yup.string().required("Tên tài khoản là bắt buộc"),
@@ -29,10 +29,16 @@ const schema = yup.object().shape({
     .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
     .required("Mật khẩu là bắt buộc"),
 });
+
 const LoginScreen = () => {
   const router = useRouter();
   const { width, height, isTablet } = useScreen();
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const {
+    login,
+    isAuthenticated,
+    isLoading,
+    oauth2Callback,
+  } = useAuth();
   const {
     handleSubmit,
     control,
@@ -57,11 +63,43 @@ const LoginScreen = () => {
       }
     );
   }, []);
+
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
       router.navigate("/root");
     }
   }, [isAuthenticated, isLoading]);
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices(); // Kiểm tra xem Google Play
+      const info = await GoogleSignin.signIn();
+      await oauth2Callback(
+        info.data?.idToken || "",
+        SocialAuthType.GOOGLE,
+        () => {
+          Toast.show({
+            type: "success", // 'success' | 'error' | 'info'
+            text1: "Thông báo",
+            text2: "Đăng nhập thành công",
+          });
+        },
+        (err) => {
+          Toast.show({
+            type: "error", // 'success' | 'error' | 'info'
+            text1: "Lỗi",
+            text2: err,
+          });
+        }
+      );
+    } catch (err) {
+      Toast.show({
+        type: "error", // 'success' | 'error' | 'info'
+        text1: "Lỗi",
+        text2: "Lỗi xác thực bằng google",
+      });
+    }
+  };
   return (
     <View style={styles.Main}>
       <StatusBarCustom bg={ColorTheme.White} style="dark-content" />
@@ -108,10 +146,17 @@ const LoginScreen = () => {
             }}
           />
           <ButtonCustom
-            title={isLoading ? "Đang sử lý..." : "Đăng nhập"}
+            title={isLoading ? "Đang xử lý..." : "Đăng nhập"}
             onPress={handleSubmit(submit)}
             mt={15}
             mb={15}
+          />
+          <ButtonCustom
+            color={ColorTheme.Red}
+            title="Đăng nhập với Google"
+            onPress={async () => {
+              await signIn();
+            }}
           />
           <View
             style={{

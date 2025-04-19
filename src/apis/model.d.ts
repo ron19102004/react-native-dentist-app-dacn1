@@ -28,6 +28,7 @@ export interface User {
   otpexpiredAt: string;
   createdAt: string;
   updatedAt: string;
+  avatarUrl?:string
 }
 
 export interface Expertise {
@@ -105,9 +106,9 @@ export function WorkStatusToViVN(workStatus: WorkStatus): string {
     case WorkStatus.DOING:
       return "Đang làm việc";
     case WorkStatus.RETIRED:
-      return "Đang nghỉ phép";
-    case WorkStatus.PERSONAL_LEAVE:
       return "Đã nghỉ việc";
+    case WorkStatus.PERSONAL_LEAVE:
+      return "Đang nghỉ phép";
   }
 }
 export interface Expertise {

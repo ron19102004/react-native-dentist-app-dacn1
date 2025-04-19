@@ -35,7 +35,7 @@ const tools: ToolModel[] = [
     label: "Chỉnh thông tin nhân viên",
   },
   {
-    href: "/root/admin/account/edit-admin",
+    href: "/root/admin/account/edit-dentist",
     icon: "edit",
     label: "Chỉnh thông tin bác sĩ",
   },

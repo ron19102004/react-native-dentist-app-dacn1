@@ -87,9 +87,30 @@ const getInfoUser = async (token:string) :Promise<ApiResponse<User>>=> {
   })
   return response.data
 }
+export enum SocialAuthType{
+  GOOGLE="GOOGLE",
+  FACEBOOK="FACEBOOK"
+}
+const oauth2Callback = async (
+  token:string,
+  type:SocialAuthType
+): Promise<ApiResponse<UserLoginResponse>> => {
+  const response = await axios.get<ApiResponse<UserLoginResponse>>(
+    authApi(`/social-mobile/callback/${type}?token=${token}`),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+  return response.data;
+};
+
 export default {
   userRegister,
   userLogin,
   updateInfo,
-  getInfoUser
+  getInfoUser,
+  oauth2Callback
 };
