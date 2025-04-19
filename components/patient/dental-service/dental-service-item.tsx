@@ -39,7 +39,9 @@ const DentalServiceItem: FC<{ isMobile: boolean; item: DentalService }> = ({
         >
           <View style={styles.overlay}>
             <View>
-              <Text style={{...styles.name}} numberOfLines={1}>{item.name}</Text>
+              <Text style={{ ...styles.name }} numberOfLines={1}>
+                {item.name}
+              </Text>
               <View style={styles.metaColumn}>
                 <Text style={styles.metaText}>
                   📅 {new Date(item.createdAt).toLocaleDateString("vi-VN")}
@@ -60,10 +62,10 @@ const DentalServiceItem: FC<{ isMobile: boolean; item: DentalService }> = ({
               )}
               <View style={styles.priceContainer}>
                 <Text style={styles.priceOrigin}>
-                $ {item.priceOrigin.toLocaleString("vi-VN")}
+                  $ {item.priceOrigin.toLocaleString("vi-VN")}
                 </Text>
                 <Text style={styles.priceCurrent}>
-                  💰 $ {item.priceCurrent.toLocaleString("vi-VN")} 
+                  💰 $ {item.priceCurrent.toLocaleString("vi-VN")}
                 </Text>
               </View>
             </View>
@@ -102,10 +104,7 @@ const styles = StyleSheet.create({
     color: "#6b7280",
   },
   priceContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
+    flexDirection: "column",
     gap: 8,
     marginTop: 10,
   },

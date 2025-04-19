@@ -4,13 +4,19 @@ import { useAuth, useScreen } from "@/src/contexts";
 import { UseScreen } from "@/src/hooks/useScreen";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useContext, useState } from "react";
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { Platform, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const HomeTabNav = () => {
   const { userCurrent } = useAuth();
   const { isMobile } = useScreen();
   const router = useRouter();
+  const [paddingTop,setPaddingTop]= useState<number>(0)
+  useEffect(()=>{
+    if (Platform.OS === "ios") {
+      setPaddingTop(50)
+    }
+  },[])
   return (
     <View
       style={{
@@ -20,6 +26,7 @@ const HomeTabNav = () => {
         alignItems: "center",
         paddingHorizontal: 20,
         paddingVertical: 20,
+        paddingTop: paddingTop
       }}
     >
       <View style={{}}>

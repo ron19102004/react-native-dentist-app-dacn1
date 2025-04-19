@@ -21,6 +21,7 @@ import CategoryHome from "@/components/home/category.home";
 import ServiceHot from "@/components/home/service-hot.home";
 import StatusBarCustom from "@/components/status-bar";
 import { useScreen } from "@/src/contexts";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
   const progress = useSharedValue<number>(0);

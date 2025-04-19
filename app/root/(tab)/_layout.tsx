@@ -44,13 +44,13 @@ const TabLayout = () => {
   }, [navigation]);
   return (
     <Tabs
-      screenOptions={{ ...screenOptionsCustom, tabBarHideOnKeyboard: true }}
+      screenOptions={{ ...screenOptionsCustom }}
       tabBar={(props) => (
         <View
           style={{
             display: hideTabar ? "none" : "flex",
             padding: 10,
-            paddingHorizontal: isMobile ? 10 : 150,
+            paddingHorizontal: 10,
             backgroundColor: ColorTheme.WhiteE,
           }}
         >

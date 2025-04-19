@@ -8,7 +8,7 @@ import ProfileTile from "@/components/profile/profile-tile.profile";
 import { UseScreen } from "@/src/hooks/useScreen";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { Fragment, useCallback, useContext } from "react";
+import React, { Fragment, useCallback, useContext, useEffect } from "react";
 import * as Clipboard from "expo-clipboard";
 
 import {
@@ -24,11 +24,32 @@ import { useFocusEffect } from "@react-navigation/native";
 import StatusBarCustom from "@/components/status-bar";
 import { useAuth, useScreen } from "@/src/contexts";
 import { Role } from "@/src/apis/model.d";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import Toast from "react-native-toast-message";
 
 const ProfileScreen = () => {
   const { isMobile } = useScreen();
   const router = useRouter();
-  const { logout, userCurrent } = useAuth();
+  const {
+    logout,
+    userCurrent,
+    statusFringerprint,
+    updateFingerprintAuthStatus,
+    fingerprintAuth,
+  } = useAuth();
+  const signOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+      await logout();
+    } catch (error) {
+      Toast.show({
+        text1: "Lỗi",
+        text2: "Lỗi đăng xuất",
+        type: "error",
+      });
+    }
+  };
   return (
     <Fragment>
       <StatusBarCustom bg={ColorTheme.Primary} style="light-content" />
@@ -39,24 +60,6 @@ const ProfileScreen = () => {
           position: "relative",
         }}
       >
-        <View
-          style={{
-            position: "absolute",
-            width: "100%",
-            bottom: 0,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 10,
-            }}
-          >
-            Dentist App - Lastest 2025/03/02
-          </Text>
-        </View>
         {/* Thông tin tài khoản */}
         <ProfileTile
           onPress={(user) => {
@@ -318,6 +321,42 @@ const ProfileScreen = () => {
               router.navigate("/root/profile/system-info");
             }}
           />
+          {/* Sử dụng vân tay  */}
+          <ListTile
+            mx={isMobile ? 15 : 30}
+            center={(color) => (
+              <Text style={{ ...styles.TileCenterStyle, color: color }}>
+                Xác thực vân tay :{" "}
+                {statusFringerprint ? "Đang bật" : "Đang tắt"}
+              </Text>
+            )}
+            leading={(color) => (
+              <MaterialIcons
+                name="fingerprint"
+                style={{ ...styles.TileIcon, color: color }}
+              />
+            )}
+            suffix={(color) => (
+              <MaterialIcons
+                name="arrow-right"
+                style={{ ...styles.TileIcon, color: color }}
+              />
+            )}
+            onPress={async () => {
+              await fingerprintAuth(
+                async () => {
+                  await updateFingerprintAuthStatus(!statusFringerprint);
+                },
+                (err) => {
+                  Toast.show({
+                    type: "error", // 'success' | 'error' | 'info'
+                    text1: "Lỗi",
+                    text2: err,
+                  });
+                }
+              );
+            }}
+          />
           {/* Đăng xuất */}
           <ListTile
             mx={isMobile ? 15 : 30}
@@ -338,7 +377,7 @@ const ProfileScreen = () => {
                 style={{ ...styles.TileIcon, color: color }}
               />
             )}
-            onPress={logout}
+            onPress={signOut}
           />
         </ScrollView>
       </View>

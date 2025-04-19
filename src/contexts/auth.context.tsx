@@ -2,6 +2,7 @@ import { createContext, FC, ReactNode, useContext, useEffect } from "react";
 import _useAuth, { UseAuth } from "../hooks/useAuth";
 import { useRouter } from "expo-router";
 import {
+  SocialAuthType,
   UpdateUserRequest,
   UserLoginRequest,
   UserRegisterRequest,
@@ -14,37 +15,31 @@ export const AuthContext = createContext<UseAuth>({
   isError: false,
   errorMessage: null,
   userCurrent: null,
-  login: function (
-    metadata: UserLoginRequest,
-    success: () => void,
-    errors: (error: string) => void
-  ): Promise<void> {
+  login: function (metadata: UserLoginRequest, success: () => void, errors: (error: string) => void): Promise<void> {
     throw new Error("Function not implemented.");
   },
   logout: function (): Promise<void> {
     throw new Error("Function not implemented.");
   },
-  register: function (
-    metadata: UserRegisterRequest,
-    success: () => void,
-    errors: (error: string) => void
-  ): Promise<void> {
+  register: function (metadata: UserRegisterRequest, success: () => void, errors: (error: string) => void): Promise<void> {
     throw new Error("Function not implemented.");
   },
-  ifAuthFn: function <T>(
-    fn: (token: string) => Promise<T>,
-    errors?: (error: string) => void,
-    retries?:number
-  ): Promise<T | null> {
+  ifAuthFn: function <T>(fn: (token: string) => Promise<T>, errors?: (error: string) => void, retries?: number): Promise<T | null> {
     throw new Error("Function not implemented.");
   },
-  updateInfo: function (
-    metadata: UpdateUserRequest,
-    success: () => void,
-    errors: (err: string) => void
-  ): Promise<void> {
+  updateInfo: function (metadata: UpdateUserRequest, success: () => void, errors: (err: string) => void): Promise<void> {
     throw new Error("Function not implemented.");
   },
+  oauth2Callback: function (token: string, type: SocialAuthType, success: () => void, errors: (error: string) => void): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  fingerprintAuth: function (success: () => void, errors: (error: string) => void): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  updateFingerprintAuthStatus: function (status: boolean): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  statusFringerprint: false
 });
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {

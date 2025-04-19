@@ -16,6 +16,7 @@ import { API_HOST_NAME, WS_POINT } from "@/src/constants/api.constant";
 import { Feather } from "@expo/vector-icons";
 import { Pressable, TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "expo-router";
+import ColorTheme from "@/common/color.constant";
 
 interface ChatMessage {
   message: string;
@@ -113,7 +114,7 @@ const Chatbot = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -157,7 +158,7 @@ const Chatbot = () => {
           </Pressable>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -205,6 +206,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     backgroundColor: "#fff",
+    color: ColorTheme.Black,
   },
   sendButton: {
     marginLeft: 10,

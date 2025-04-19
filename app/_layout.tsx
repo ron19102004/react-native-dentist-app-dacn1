@@ -1,11 +1,13 @@
+import { googleCredi } from "@/src/constants/google.constant";
 import AuthProvider from "@/src/contexts/auth.context";
 import NotificationProvider, {
   NotificationContext,
 } from "@/src/contexts/notification.context";
 import ScreenProvider from "@/src/contexts/screen.context";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { Stack } from "expo-router";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Platform, UIManager } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,8 +21,15 @@ import Toast, {
 if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
-
 const AppLayout = () => {
+  useEffect(() => {
+    // Cấu hình Google Sign-In khi component được mount
+    GoogleSignin.configure({
+      webClientId: googleCredi.webClientId, // Lấy từ Google Cloud Console (Web)
+      iosClientId: googleCredi.iosClientId, // Lấy từ Google Cloud Console (iOS)
+      scopes: googleCredi.scopes,
+    });
+  }, []);
   return (
     <Fragment>
       <ScreenProvider>

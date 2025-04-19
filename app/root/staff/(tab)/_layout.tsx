@@ -18,7 +18,7 @@ const TabStaffLayout = () => {
         <View
           style={{
             padding: 10,
-            paddingHorizontal: isMobile ? 10 : 150,
+            paddingHorizontal: 10,
             backgroundColor: ColorTheme.WhiteE,
           }}
         >
